@@ -1,0 +1,29 @@
+{
+  "name": "animal",
+  "version": "1.0.0",
+  "description": "Play \"guess the animal\"",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Blixtbild/animal.git"
+  },
+  "keywords": [
+    "game",
+    "binary",
+    "tree",
+    "node.js"
+  ],
+  "author": "Johan Peyron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Blixtbild/animal/issues"
+  },
+  "homepage": "https://github.com/Blixtbild/animal#readme",
+  "dependencies": {
+    "chalk": "2.4.1",
+    "express": "4.16.3"
+  }
+}
