@@ -2,51 +2,24 @@
   "name": "animal",
   "version": "1.0.0",
   "description": "Play \"guess the animal\"",
-  "main": "app.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set DEBUG=* & nodemon app.js"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Blixtbild/animal.git"
-  },
-  "keywords": [
-    "game",
-    "binary",
-    "tree",
-    "node.js"
-  ],
   "author": "Johan Peyron",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Blixtbild/animal/issues"
   },
   "homepage": "https://github.com/Blixtbild/animal#readme",
-  "dependencies": {
-    "bootstrap": "4.1.1",
-    "chalk": "2.4.1",
-    "debug": "3.1.0",
-    "ejs": "2.6.1",
-    "express": "4.16.3",
-    "jquery": "3.3.1",
-    "lodash": "4.17.10",
-    "morgan": "1.9.0",
-    "popper.js": "1.14.3"
-  },
-  "devDependencies": {
-    "eslint": "4.19.1",
-    "eslint-config-airbnb-base": "12.1.0",
-    "eslint-plugin-import": "2.12.0",
-    "nodemon": "1.17.5"
-  },
-  "nodemonConfig":{
-    "restartable":"rs",
-    "ignore":["node_modules/**/node_modules"],
-    "delay": "2500",
-    "env": {
-      "NODE_ENV": "development",
-      "PORT": 4000
-    }
+    "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "mongodb": "^3.0.5",
+    "monk": "^6.0.5",
+  "morgan": "~1.9.0"
   }
 }
