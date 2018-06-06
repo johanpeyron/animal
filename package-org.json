@@ -4,7 +4,7 @@
   "description": "Play \"guess the animal\"",
   "private": true,
   "scripts": {
-    "start": "set DEBUG= & nodemon node ./bin/www"
+    "start": "node ./bin/www"
   },
   "author": "Johan Peyron",
   "license": "ISC",
@@ -21,19 +21,5 @@
     "mongodb": "^3.0.5",
     "monk": "^6.0.5",
     "morgan": "~1.9.0"
-  },
-  "devDependencies": {
-    "nodemon": "1.17.5"
-  },
-  "nodemonConfig": {
-    "restartable": "rs",
-    "ignore": [
-      "node_modules/**/node_modules"
-    ],
-    "delay": "2500",
-    "env": {
-      "NODE_ENV": "development",
-      "PORT": 4000
-    }
   }
 }
