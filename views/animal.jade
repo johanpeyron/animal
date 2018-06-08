@@ -35,7 +35,7 @@ block content
         tbody
     // /USER LIST
 
-    // ADD USER and UPDATE USER
+    // ADD USER
     h2 Add User
     #addUser
       fieldset
@@ -51,5 +51,19 @@ block content
         button#btnAddUser Add User
         button#btnUpdateUser Update User
     // /ADD USER
+
+    // GUESS ANIMAL
+    h2 Animal
+    #guessAnimal
+      form(name="add-estimation", method="post")
+        div.input
+          span.label Title
+          input(type="text", name="title")
+        div.input
+          span.label Description
+          textarea(name="description", cols="40", rows="5")
+        div.actions
+          input(type="submit", value="add")
+    // /GUESS ANIMAL
 
   // /WRAPPER
