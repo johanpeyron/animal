@@ -1,12 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var path = require('path');
-
-startPg = path.join(__dirname, '../', 'index.html');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.sendFile(startPg);
+  res.render('index-2', { title: 'Funka' });
 });
+
+console.log('leaving route index-2');
 
 module.exports = router;

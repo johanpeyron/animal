@@ -1,0 +1,69 @@
+extends layout
+
+block content
+
+  // Wrapper
+  #wrapper
+
+    // USER LIST
+    h2 User List
+    #userList
+      table
+        thead
+          th UserName
+          th Email
+          th Delete?
+        tbody
+    // /USER LIST
+
+    // ADD USER
+    h2 Add User
+    #addUser
+      fieldset
+        input#inputUserName(type='text', placeholder='Username')
+        input#inputUserEmail(type='text', placeholder='Email')
+        br
+        input#inputUserFullname(type='text', placeholder='Full Name')
+        input#inputUserAge(type='text', placeholder='Age')
+        br
+        input#inputUserLocation(type='text', placeholder='Location')
+        input#inputUserGender(type='text', placeholder='gender')
+        br
+        button#btnAddUser Add User
+    // /ADD USER
+
+    // ADD USER2
+    h2 Add User2
+    #addUser2
+      fieldset
+        strong Question:
+        |  <span id='animalQuestion2'></span>
+        br
+        input#inputUserFullname2(type='text', placeholder='Full Name')
+        input#inputUserAge2(type='text', placeholder='Age')
+        br
+        input#inputUserLocation2(type='text', placeholder='Location')
+        strong Answer3:
+        |  <text id='animalAnswer3'></span>
+        br
+        button#btnAddUser2 Add User
+    // /ADD USER
+
+    // ANIMAL
+    h2 Animal
+    #animal
+      strong Question:
+      |  <span id='animalQuestion'></span>
+      br
+      strong Answer:
+      |  <span id='animalAnswer'></span>
+      br
+      strong Answer2:
+      |  <text id='animalAnswer2'></span>
+      br
+      strong Answer3:
+      |  <text id='animalAnswer3-org'></span>
+      br
+    // /ANIMAL
+
+  // /WRAPPER

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Back to basic</title>
+
+  <!-- Bootstrap core CSS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      
+      $("#btn1").click(function(){
+      $("#debugga").text("Hello world!");
+    });
+
+      $("#btn2").click(function(){
+      $("#debugga2").text("Hello world!");
+    });
+
+    $("p").click(function(){
+        $(this).hide();
+    });
+});
+  </script>
+</head>
+
+<body>
+  <form>
+    <h1 id="fraga">Fråga</h1>
+    <p id="debugga"></p>
+    <p id="debugga2">debugga2</p>
+    <input type="text" id="radEtt" value="första raden"><br><br>
+    <button  type="button" id="btn1">Sign in</button>
+    <button  type="button" id="btn2">btn2</button>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/javascripts/popper.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/global-2.js"></script>
+  </form>
+
+  </body>
+</html>

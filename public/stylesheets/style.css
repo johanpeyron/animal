@@ -11,6 +11,10 @@ a {
   color: #00B7FF;
 }
 
+#animal {
+	margin:30px 30px 30px 30px;
+}
+
 .wrapper {
 	padding-left:312px;
 	position:relative;
@@ -50,17 +54,6 @@ a {
 	top:0; left:0;
 }
 .userInfo p {
-  padding:15px;
-  border:1px solid #CCC;
-  background:rgba(80,120,255,0.05);
-}
-
-.animalInfo {
-	width:250px;
-	position:absolute;
-	top:500; left:0;
-}
-.animalInfo p {
   padding:15px;
   border:1px solid #CCC;
   background:rgba(80,120,255,0.05);
