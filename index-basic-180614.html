@@ -12,28 +12,41 @@
     $(document).ready(function(){
       
       $("#btn1").click(function(){
-      $("#debugga2").text("Hello world!");
+      $("#debugga").text("Hello world!");
     });
-
       $("#btn2").click(function(){
       $("#debugga2").text("Hello world!");
     });
-
+      $("#btnTeach").click(function(){
+      $("#skillnadEtt").val("Hello world!");
+    });
     $("p").click(function(){
         $(this).hide();
+    });
+    $("#btnFormTva").click(function(){
+        $(formTva).toggle();
     });
 });
   </script>
 </head>
 
 <body>
-  <form>
+  <form id="formEtt">
     <h1 id="fraga">Fråga</h1>
     <p id="debugga"></p>
     <p id="debugga2">debugga2</p>
     <input type="text" id="radEtt" value="första raden"><br><br>
-    <button  type="submit" id="btn1">Sign in</button>
+    <button  type="button" id="btn1">Sign in</button>
     <button  type="button" id="btn2">btn2</button>
+    <button  type="button" id="btnFormTva">Toggle formTva</button>
+  </form>
+  <form id="formTva">
+    <h1 id="skillnad">What is the difference</h1>
+    <p id="debugga"></p>
+    <p id="debugga2">debugga2</p>
+    <input type="text" id="skillnadEtt" value="det som skiljer"><br><br>
+    <button  type="button" id="btnTeach">Teach me</button>
+  </form>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -41,7 +54,6 @@
     <script src="/javascripts/popper.min.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
     <script src="/javascripts/global-2.js"></script>
-  </form>
 
   </body>
 </html>

@@ -17,8 +17,8 @@ function populateTable() {
   $.getJSON( '/animalsroute/animals', function( animaldata ) {
   
     // Animals data array for animals collection
-  var animalsListData = [];
-  var databasTxt = '';
+    var animalsListData = [];
+    var databasTxt = '';
 
     // nodetest2.animalDB.animals
     animalsListData = animaldata;
@@ -26,9 +26,8 @@ function populateTable() {
 
     //$('#animalAnswer2').text = JSON.stringify(animalsListData);
     //$('#description').text = JSON.stringify(animalsListData);
-    $('#debugga').text(databasTxt);
-    $('#radEtt').val("Changed by global-2.js");
-    $('#skillnadEtt').val("Changed by global-2.js");
+    $('#dbTxt').text(databasTxt);
+    $('#radEtt').val(databasTxt);
     
     });
 }
