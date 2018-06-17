@@ -25,7 +25,7 @@ function populateTable() {
     $('#radEtt').val(databasTxt);
     
     // Pass the animals to johantestar.js
-    passAnimals(animaldata);
+    shareAnimals(animaldata);
     });
 }
 

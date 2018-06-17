@@ -1,33 +1,57 @@
 // Global variable with data from MongoDB
 var animalsData = [];
-// Keeping track of current question.
-var currId = 0;
+// Keep track of current question.
+var currId = -1;
+// Current correct answer
+var currCorrect = 0;
 
 // ====================   Functions   ========================================
 
-function passAnimals(data) {
+function shareAnimals(data) {
  animalsData = data;
 }
 
 function playGame(button) {
-  var myId = 0;
+  var idYes = 0;
+  var idNo = 0;
 
-  $('#formEttFraga').text(animalsData[currId].question);
-  if (currId < (animalsData.length - 1)) {
-    currId++;
-  }
+  
   // Player pressed 'Yes'. Next question: 2 * currId
   if (button == 'Yes') {
-    myId = 2 * currId;
+    idYes = 2 * currId;
+    // Use idNo if idYes leads to nowhere
+    idNo = (2 * currId) + 1;
   } else {
-    myId = (2 * currId) + 1;
+    idYes = (2 * currId) + 1;
+    idNo = (2 * currId);
   }
+  
+  if (doIKnowMore(idYes)) {
+    askNext(idYes);
+  } else  if (doIKnowMore(idNo)) {
+    askNext(idNo);
+  } else {
+    teachMeMoreAnimals();
+  }
+}
 
-  if (animalsData[myId] !== undefined) {
-    alert('found next question');
-  } else {
-    alert('no more questions');
+function askQuestion(id) {
+  if (id < (animalsData.length - 1)) {
+    if (doIKnowMore(id)) {
+      $('#formEttFraga').text(animalsData[id].question);
+      return true;
+    }
+    // No more questions found
+    return false;
   }
+}
+
+function doIKnowMore(id) {
+  return (animalsData[id] !== undefined);
+}
+
+function teachMeMoreAnimals(){
+  alert('teachMeMoreAnimals');
 }
 
 
@@ -36,12 +60,19 @@ function playGame(button) {
 $("#btnFormEttYes").click(function () {
   var txt1 = 'Do you want to play a game?';
   var txt2 = 'Think of an animal and let me guess. Press Yes to start.';
-  
-  // Player clicks Yes for the first time
-  if ($('#formEttFraga').text() == txt1) {
+  var foundQuestion = false;
+
+  if (currId == -1) {
+    // Replace the info text
     $('#formEttFraga').text(txt2);
+    currId = 0;
   } else {
-    playGame('Yes');
+    foundQuestion = askQuestion(currId);
+    if (foundQuestion && currId == 0 && currCorrect == 0) {
+      // The first question shows up. Our player has not reponded to it.
+
+    }
+    currId++;
   }
 });
 
