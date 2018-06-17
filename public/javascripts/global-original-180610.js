@@ -48,7 +48,21 @@ function populateTable() {
     //$('#userList table tbody').html(tableContent);
     $('#userList table tbody').html(tableContent);
   });
+
+
+  // jQuery AJAX call getting some animals
+  $.getJSON( '/animalsroute/animals', function( animaldata ) {
+  
+    // Animals data array for animals collection
+    var animalsListData = [];
+
+    animalsListData = animaldata;
+
+    $('#animalAnswer2').text(JSON.stringify(animalsListData));
+    $('#animalAnswer3').text(JSON.stringify(animalsListData));
+    });
 }
+
 
 // Show User Info
 function showUserInfo(event) {

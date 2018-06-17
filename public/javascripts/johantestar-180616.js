@@ -1,32 +1,27 @@
-// DOM Ready =============================================================
-$(document).ready(function() {
+// ====================   Functions   ========================================
 
-  // Populate the user table on initial page load
-  populateTable();
+function dbugLog() {
+  var arrAnimal = [];
+  var arrId = [];
+  var i = 0;
+  var txt = "";
 
-});
+  arrAnimal = JSON.parse(document.getElementById('dbTxt').innerHTML);
+  for (i = 0; i < arrAnimal.length; i++) {
+    arrId.push(arrAnimal[i].id);
+  }
 
-// Functions =============================================================
+  $('#allIds').val(arrId);
 
+  // Sort arrId ascending and display min value
+  arrId.sort(function (a, b) {
+    return a - b
+  });
+  $('#minId').val(arrId[0]);
 
-// Fill table with data
-function populateTable() {
-
-  // jQuery AJAX call to get the animals
-  $.getJSON( '/animalsroute/animals', function( animaldata ) {
-  
-    var databasTxt = '';
-
-    // nodetest2.animalDB.animals
-  //  animalsData = animaldata;
-    databasTxt = JSON.stringify(animaldata);
-
-    $('#dbTxt').text(databasTxt);
-    $('#radEtt').val(databasTxt);
-    
-    // Pass the animals to johantestar.js
-    passAnimals(animaldata);
-    });
+  // display max value
+  arrId.reverse();
+  $('#maxId').val(arrId[0]);
 }
 
 // Add Animal
@@ -101,3 +96,36 @@ function deleteAnAnimal() {
 
   }
 }
+
+// Small helper functions=========================================================
+$("#btnFormEttYes").click(function () {
+  var txt1 = 'Do you want to play a game?';
+  var txt2 = 'Think of an animal and let me guess which one. Press Yes-button to start.';
+
+  // Player clicks Yes for the first time
+  if ($('#formEttFraga').text() == txt1) {
+    $('#formEttFraga').text(txt2);
+  }
+});
+
+$("#radTva").click(function () {
+  $(formAddAnimal).val(countQuestions());
+});
+
+$("#btnToggleFormDbug").click(function () {
+  $(formDbug).toggle();
+});
+
+$("#btnToggleFormAddAnimal").click(function () {
+  $(formAddAnimal).toggle();
+});
+
+// closure, creating global counter
+// invoke with countQuestions();
+var countQuestions = (function () {
+  var counter = 0;
+  return function () {
+    counter += 1;
+    return counter;
+  }
+})();

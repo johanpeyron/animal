@@ -1,4 +1,4 @@
-// Userlist data array for filling in info box
+// Global variable with the entire animals collection
 var userListData = [];
 
 // DOM Ready =============================================================
@@ -6,6 +6,7 @@ $(document).ready(function() {
 
   // Populate the user table on initial page load
   populateTable();
+
 });
 
 // Functions =============================================================
@@ -31,3 +32,4 @@ function populateTable() {
     
     });
 }
+
