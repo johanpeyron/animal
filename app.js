@@ -16,8 +16,8 @@ var db = monk('localhost:27017/animalDB');
 var app = express();
 
 // view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(morgan('tiny'));
 app.use(express.json());

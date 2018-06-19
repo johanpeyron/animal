@@ -62,7 +62,9 @@ $("#btnFormEttYes").click(function () {
   var txt2 = 'Think of an animal and let me guess. Press Yes to start.';
   var foundQuestion = false;
 
-  if (currId == -1) {
+  dbg('start:  Yes'+' currId= '+ currId +' currCorrect= '+ currCorrect+'\t');
+  
+  if (currId == -1){
     // Replace the info text
     $('#formEttFraga').text(txt2);
     currId = 0;
@@ -70,32 +72,52 @@ $("#btnFormEttYes").click(function () {
     foundQuestion = askQuestion(currId);
     if (foundQuestion && currId == 0 && currCorrect == 0) {
       // The first question shows up. Our player has not reponded to it.
-
+      
     }
     currId++;
   }
+  
+  dbg('end:  Yes'+' currId= '+ currId +' currCorrect= '+ currCorrect+'\n');
 });
 
 $("#btnFormEttNo").click(function () {
   var txt1 = 'Do you want to play a game?';
+  
+  dbg('start:  No'+' currId= '+ currId +' currCorrect= '+ currCorrect+'\n');
   // Game hasn´t started yet
   if (currId < 1) {
     $('#formEttFraga').text(txt1);
   } else {
     playGame('No');
   }
+  
+  dbg('end:  No'+' currId= '+ currId +' currCorrect= '+ currCorrect+'\n');
 });
 
 $("#radTva").click(function () {
   $(formAddAnimal).val(countQuestions());
 });
 
+function dbg(t){
+  if(typeof t == "string") {
+    $('#areaDbug').append(t);
+  } else {
+    $('#areaDbug').append('This was not text');
+  }
+}
+
 $("#btnToggleFormDbug").click(function () {
   $(formDbug).toggle();
 });
 
 $("#btnToggleFormAddAnimal").click(function () {
+  //$('#areaDbug').append('test');
+  $('#areaDbug').text('');
   $(formAddAnimal).toggle();
+});
+
+$("#btnClear").click(function () {
+  $('#areaDbug').text('');
 });
 
 // closure, creating global counter
@@ -105,7 +127,7 @@ var countQuestions = (function () {
   return function () {
     counter += 1;
     return counter;
-  }
+  };
 })();
 
 function clearUserInput() {
@@ -131,7 +153,7 @@ function dbugLog() {
 
   // Sort arrId ascending and display min value
   arrId.sort(function (a, b) {
-    return a - b
+    return a - b;
   });
   $('#minId').val(arrId[0]);
 
