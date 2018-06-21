@@ -1,3 +1,6 @@
+// ====================   Globals   ===========================================
+// Global variable with data from MongoDB
+gAnimalData = [];
 // DOM Ready =============================================================
 $(document).ready(function() {
 
@@ -18,14 +21,11 @@ function populateTable() {
     var databasTxt = '';
 
     // nodetest2.animalDB.animals
-  //  animalsData = animaldata;
+    gAnimalData = animaldata;
     databasTxt = JSON.stringify(animaldata);
 
     $('#dbTxt').text(databasTxt);
     $('#radEtt').val(databasTxt);
-    
-    // Pass the animals to johantestar.js
-    shareAnimals(animaldata);
     });
 }
 
