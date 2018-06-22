@@ -18,12 +18,12 @@ function populateTable() {
     var databasTxt = '';
 
     // nodetest2.animalDB.animals
-    gAnimalData = animaldata;
+  //  animalsData = animaldata;
     databasTxt = JSON.stringify(animaldata);
 
     $('#dbTxt').text(databasTxt);
     $('#radEtt').val(databasTxt);
-
+    
     // Pass the animals to johantestar.js
     shareAnimals(animaldata);
     });
