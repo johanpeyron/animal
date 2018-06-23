@@ -199,7 +199,7 @@ $("#btnFormEttYes").click(function () {
     return;
   }
   
-  isMatch = (gAdata[gId].answer == 'Yes') ? 1 : 0;
+  isMatch = (gAdata[gIndex].answer == 'Yes') ? 1 : 0;
   
   // Question and answer match
   if (isMatch == 1) {
