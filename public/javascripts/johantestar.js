@@ -1,6 +1,8 @@
 // ====================   Globals   ===========================================
 // Global variable with animals array
 let gAdata = [];
+// current index in gAdata
+let gIndex = 0;
 // id of current question
 let gId = 0;
 // did player answer current question?
@@ -172,18 +174,27 @@ function teachMeMoreAnimals(){
 $("#btnFormEttYes").click(function () {
 //Does answer match question?
   let isMatch = 0;
-  // local id, temp variable when testing gId
+  // local id, temp variable when testing gIndex
   let l_id = 0;
+  testObj = {};
 
-  if (gId > 1) {
+/*   detta funkar
+     testObj = loopIds(2);
+  if (testObj.id == undefined) {
+      alert('nothing back');
+  } else {
+    alert(testObj.id);
+  } */
+
+ /*  if (gId > 1) {
     dbg('start:  Yes'+' id= '+ gAdata[gId].id +'\t');
-  }
+  } */
   
-  // Everything in the db with id < 1 is infotext
-  if (gId < 4){
-    // Get new info text
-    gId++;
-    $('#formEttFraga').text(gAdata[gId].question);
+  // gAdata[0] and gAdata[1] contain infotext
+  // gAdata[2] is the first node in the game-tree
+  if (gIndex < 3){
+    $('#formEttFsraga').text(gAdata[gIndex].question);
+    gIndex++;
     
     return;
   }
@@ -194,7 +205,8 @@ $("#btnFormEttYes").click(function () {
   if (isMatch == 1) {
       // Is there a next question with id =  2 * gId ?
       l_id = 2 * gId;
-      if (gAdata[l_id] !== undefined) {
+      testObj = loopIds(l_id);
+      if (testObj.id != "") {
           // Ask that question
           gId = l_id;
           $('#formEttFraga').text(gAdata[gId].question);
