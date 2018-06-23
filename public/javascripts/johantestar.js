@@ -172,10 +172,12 @@ function teachMeMoreAnimals(){
 $("#btnFormEttYes").click(function () {
 //Does answer match question?
   let isMatch = 0;
-  // function_Id, local for this function
-  let f_Id = 0;
+  // local id, temp variable when testing gId
+  let l_id = 0;
 
-  dbg('start:  Yes'+' id= '+ gAdata[gId].id +'\t');
+  if (gId > 1) {
+    dbg('start:  Yes'+' id= '+ gAdata[gId].id +'\t');
+  }
   
   // Everything in the db with id < 1 is infotext
   if (gId < 1){
@@ -192,15 +194,17 @@ $("#btnFormEttYes").click(function () {
   // Question and answer match
   if (isMatch == 1) {
       // Is there a next question with id =  2 * gId ?
-      f_Id = 2 * gId;
-      if (gAdata[f_Id] !== undefined) {
+      l_id = 2 * gId;
+      if (gAdata[l_id] !== undefined) {
         // Ask that question
-        gId = f_Id;
+        gId = l_id;
         $('#formEttFraga').text(gAdata[gId].question);
       }
+  } else {
       // Question and answer did not match
-      else if (gAdata[f_Id + 1] !== undefined) {
-        gId = f_Id + 1;
+      // Is there another leaf on this question-branch?
+      if (gAdata[l_id + 1] !== undefined) {
+        gId = l_id + 1;
         $('#formEttFraga').text(gAdata[gId].question);
       } else {
         // Player must add a new animal to the db
