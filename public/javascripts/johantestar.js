@@ -1,8 +1,8 @@
 // ====================   Globals   ===========================================
 // Global variable with animals array
 let gAdata = [];
-// Global for current value of animals[].id
-let gId = -1;
+// id of current question
+let gId = 0;
 // did player answer current question?
 let gIsAnswered = 0;
 
@@ -180,11 +180,10 @@ $("#btnFormEttYes").click(function () {
   }
   
   // Everything in the db with id < 1 is infotext
-  if (gId < 1){
+  if (gId < 4){
     // Get new info text
     gId++;
     $('#formEttFraga').text(gAdata[gId].question);
-    //dbg('end:  Yes'+' id= '+ gAdata[gId].id +' isMatch= '+ isMatch+'\r\n');
     
     return;
   }
@@ -196,34 +195,32 @@ $("#btnFormEttYes").click(function () {
       // Is there a next question with id =  2 * gId ?
       l_id = 2 * gId;
       if (gAdata[l_id] !== undefined) {
-        // Ask that question
-        gId = l_id;
-        $('#formEttFraga').text(gAdata[gId].question);
+          // Ask that question
+          gId = l_id;
+          $('#formEttFraga').text(gAdata[gId].question);
+      } else {
+          // Player must add a new animal to the db
+            teachMeMoreAnimals();
       }
   } else {
-      // Question and answer did not match
-      // Is there another leaf on this question-branch?
-      if (gAdata[l_id + 1] !== undefined) {
-        gId = l_id + 1;
-        $('#formEttFraga').text(gAdata[gId].question);
+        // Question and answer did not match
+        l_id = (2 * gId) + 1;
+        if (gAdata[l_id ] !== undefined) {
+          gId = l_id + 1;
+          $('#formEttFraga').text(gAdata[gId].question);
       } else {
-        // Player must add a new animal to the db
-          teachMeMoreAnimals();
+          // Player must add a new animal to the db
+            teachMeMoreAnimals();
       }
   }
+  
   dbg('end:  Yes'+' id= '+ gAdata[gId].id +'\r\n');
 });
 
 
 
 $("#btnFormEttNo").click(function () {
-
-  dbg('start:  No'+' gId= '+ gId +' isMatch= '+ isMatch+'\n');
-  if (gId > 1) {
-    playGame('No');
-  }
-  
-  dbg('end:  No'+' gId= '+ gId +' isMatch= '+ isMatch+'\r\n');
+    
 });
 
 $("#radTva").click(function () {
@@ -292,4 +289,19 @@ function dbugLog() {
   // display max value
   arrId.reverse();
   $('#maxId').val(arrId[0]);
+}
+
+function loopIds (val) {
+  let myObj = {};
+  
+  for (let i = 0; i < gAdata.length; i++) {
+    if (gAdata[i].id == val) {
+        myObj.animal = gAdata[i].animal;
+        myObj.answer = gAdata[i].answer;
+
+        return myObj;
+    }
+  }
+
+  return myObj;
 }
