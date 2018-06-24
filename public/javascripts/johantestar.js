@@ -1,10 +1,12 @@
 // ====================   Globals   ===========================================
 // Global variable with animals array
 let gAdata = [];
+// current index in gAdata
+let gIndex = 0;
 // id of current question
 let gId = 0;
-// did player answer current question?
-let gIsAnswered = 0;
+// answer to current question
+let gAnswer = "";
 
 // DOM Ready =============================================================
 $(document).ready(function() {
@@ -29,10 +31,12 @@ function populateTable() {
         $('#dbTxt').text(databasTxt);
         $('#radEtt').val(databasTxt);
         gAdata = animaldata;
-
+        
         if (gAdata[0] !== undefined) {
-          // Assign first questions id to gId
-          gId = gAdata[0].id;
+          //gId = gAdata[0].id;
+          $('#index').val(gAdata[0].id);
+          $('#id').val(gAdata[0].id);
+          $('#answer').val(gAdata[0].answer);
           // Infotext from the db
             $('#formEttFraga').text(gAdata[0].question);
         }
@@ -125,7 +129,6 @@ function playGame(button) {
   var idYes = 0;
   var idNo = 0;
 
-  dbg('start:  playGame'+' gId= '+ gId +' isMatch= '+ isMatch+'\n');
   // Player pressed 'Yes'. Next question: 2 * gId
   if (button == 'Yes' && isMatch ==1) {
     $('#formEttFraga').text(gAdata[gId].question);
@@ -144,7 +147,6 @@ function playGame(button) {
   } else {
     teachMeMoreAnimals();
   }
-  dbg('end:  playGame'+' gId= '+ gId +' isMatch= '+ isMatch+'\r\t');
 }
 
 function askQuestion(id) {
@@ -170,54 +172,63 @@ function teachMeMoreAnimals(){
 
 // Small helper functions======================================================
 $("#btnFormEttYes").click(function () {
-//Does answer match question?
-  let isMatch = 0;
-  // local id, temp variable when testing gId
-  let l_id = 0;
+    l_obj = {};
+    id = 0;
+    txt = "";
 
-  if (gId > 1) {
-    dbg('start:  Yes'+' id= '+ gAdata[gId].id +'\t');
-  }
-  
-  // Everything in the db with id < 1 is infotext
-  if (gId < 4){
-    // Get new info text
-    gId++;
-    $('#formEttFraga').text(gAdata[gId].question);
+    // the documents in MongoDB with id < 4 carry infotext
+    // the document with id = 4 has the first question
+    if (Number($('#id').val()) < 4) {
+        id = Number($('#id').val()) + 2;
+        $('#id').val(id);
+
+        l_obj = loopIds(id);
+        showNextQuestion(l_obj);
+        return;
+    }
+
+    alert('game starts');
     
-    return;
-  }
-  
-  isMatch = (gAdata[gId].answer == 'Yes') ? 1 : 0;
-  
-  // Question and answer match
-  if (isMatch == 1) {
-      // Is there a next question with id =  2 * gId ?
-      l_id = 2 * gId;
-      if (gAdata[l_id] !== undefined) {
-          // Ask that question
-          gId = l_id;
-          $('#formEttFraga').text(gAdata[gId].question);
-      } else {
-          // Player must add a new animal to the db
-            teachMeMoreAnimals();
-      }
-  } else {
-        // Question and answer did not match
-        l_id = (2 * gId) + 1;
-        if (gAdata[l_id ] !== undefined) {
-          gId = l_id + 1;
-          $('#formEttFraga').text(gAdata[gId].question);
-      } else {
-          // Player must add a new animal to the db
-            teachMeMoreAnimals();
-      }
-  }
-  
-  dbg('end:  Yes'+' id= '+ gAdata[gId].id +'\r\n');
+    if (indx >= 2) {
+        l_obj = loopIds(indx);
+        showNextQuestion(l_obj);
+        
+        // Question and answer match
+        if (l_obj.answer == 'Yes') {
+            // Remember the id of this animal
+            ('#lastcorrect').val(l_obj.id);
+            // Look for next question in "Yes"-direction
+            indx = 2 * l_obj.id;
+            l_obj = loopIds(indx);
+            if (l_obj.id != "") {
+                l_obj = loopIds(indx);
+                // Ask that question
+                showNextQuestion(l_obj);
+            } else {
+                // Look for next question in "No"-direction
+                indx = 2 * l_obj.id;
+                l_obj = loopIds(indx);
+                if (l_obj.id != "") {
+                    l_obj = loopIds(indx);
+                    showNextQuestion(l_obj);
+                } else {
+                    // Player must add a new animal to the db
+                    teachMeMoreAnimals();
+                }
+            }
+        } else {
+            // Question and answer did not match
+            indx = (2 * gIndex) + 1;
+            if (gAdata[indx ] !== undefined) {
+                gIndex = indx + 1;
+                $('#formEttFraga').text(gAdata[gIndex].question);
+            } else {
+                // Player must add a new animal to the db
+                teachMeMoreAnimals();
+            }
+        }
+    }
 });
-
-
 
 $("#btnFormEttNo").click(function () {
     
@@ -226,14 +237,6 @@ $("#btnFormEttNo").click(function () {
 $("#radTva").click(function () {
   $(formAddAnimal).val(countQuestions());
 });
-
-function dbg(t){
-  if(typeof t == "string") {
-    $('#areaDbug').append(t);
-  } else {
-    $('#areaDbug').append('This was not text');
-  }
-}
 
 $("#btnToggleFormDbug").click(function () {
   $(formDbug).toggle();
@@ -256,6 +259,15 @@ var countQuestions = (function () {
   return function () {
     counter += 1;
     return counter;
+  };
+})();
+
+// closure, keep track of current id
+var curId = (function (val) {
+  var l_val = 0;
+  return function () {
+    l_val = val;
+    return l_val;
   };
 })();
 
@@ -291,17 +303,35 @@ function dbugLog() {
   $('#maxId').val(arrId[0]);
 }
 
+// call with id
+// return object gAdata[id]
 function loopIds (val) {
-  let myObj = {};
+  let l_obj = {};
   
   for (let i = 0; i < gAdata.length; i++) {
     if (gAdata[i].id == val) {
-        myObj.animal = gAdata[i].animal;
-        myObj.answer = gAdata[i].answer;
+        l_obj.id = gAdata[i].id;
+        l_obj.index = i;
+        l_obj.animal = gAdata[i].animal;
+        l_obj.answer = gAdata[i].answer;
+        l_obj.question = gAdata[i].question;
 
-        return myObj;
+        return l_obj;
     }
   }
+  // No match for
+  l_obj.id = "";
+  l_obj.index = "";
+  l_obj.animal = "";
+  l_obj.answer = "";
+  l_obj.question = "";
+  
+  return l_obj;
+}
 
-  return myObj;
+function showNextQuestion (obj) {
+  $('#index').val(obj.index);
+  $('#id').val(obj.id);
+  $('#answer').val(obj.answer);
+  $('#formEttFraga').text(obj.question);
 }
