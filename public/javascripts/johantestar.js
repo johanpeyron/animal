@@ -126,26 +126,53 @@ function deleteAnAnimal() {
 // ====================   Functions   =========================================
 
 function playGame(button) {
-  var idYes = 0;
-  var idNo = 0;
+  l_obj = {};
+  id = 0;
+  txt = "";
 
-  // Player pressed 'Yes'. Next question: 2 * gId
-  if (button == 'Yes' && isMatch ==1) {
-    $('#formEttFraga').text(gAdata[gId].question);
-    idYes = 2 * gId;
-    // Use idNo if idYes leads to nowhere
-    idNo = (2 * gId) + 1;
-  } else {
-    idYes = (2 * gId) + 1;
-    idNo = (2 * gId);
+  // This section display infotext and the first question
+  // Documents in MongoDB with id < 4 carry infotext
+  // The document with id = 4 has the first question
+  if (Number($('#id').val()) < 4) {
+      id = Number($('#id').val()) + 2;
+      $('#id').val(id);
+
+      if (button == 'No') {
+        // Player is not in a playful mood today, reload page
+        location.reload();
+        return;
+      }
+
+      l_obj = loopIds(id);
+      showNextQuestion(l_obj);
+      return;
+  }
+
+  // Respond to a question
+  id = Number($('#id').val());
+      
+  // Question and answer match
+  if ($('#answer').val() == button) {
+      // Remember the id of this animal
+      $('#lastcorrect').val(id);
   }
   
-  if (doIKnowMore(idYes)) {
-    askNext(idYes);
-  } else  if (doIKnowMore(idNo)) {
-    askNext(idNo);
+  // Look for next question in "Yes"-direction
+  id = 2 * id;
+  l_obj = loopIds(id);
+  if (l_obj.id != "") {
+      // Ask that question
+      showNextQuestion(l_obj);
   } else {
-    teachMeMoreAnimals();
+      // Look for next question in "No"-direction
+      id = id + 1;
+      l_obj = loopIds(id);
+      if (l_obj.id != "") {
+          showNextQuestion(l_obj);
+      } else {
+          // Player must add a new animal to the db
+          teachMeMoreAnimals();
+      }
   }
 }
 
@@ -165,74 +192,30 @@ function doIKnowMore(id) {
 }
 
 function teachMeMoreAnimals(){
-  alert('teachMeMoreAnimals');
+  l_obj = {};
+  addMe = {};
+  id = 0;
+  lastcorrect = 0;
+  txt = "";
+  question = "";
+  animal = "";
+  
+  // The last animal we know for sure is correct
+  // We assume our player is thinking of it
+  id = Number($('#lastcorrect').val());
+  l_obj = loopIds(id);
+  animal = l_obj.animal;
+  
+  // gAdata[].id = 1 contains the first add-animal question
+  l_obj = loopIds(1);
+  question = l_obj.question;
+  txt = question + " " + animal + ' ?';
+  $('#skillnad').text(txt);
 }
 
 
 
 // Small helper functions======================================================
-$("#btnFormEttYes").click(function () {
-    l_obj = {};
-    id = 0;
-    txt = "";
-
-    // the documents in MongoDB with id < 4 carry infotext
-    // the document with id = 4 has the first question
-    if (Number($('#id').val()) < 4) {
-        id = Number($('#id').val()) + 2;
-        $('#id').val(id);
-
-        l_obj = loopIds(id);
-        showNextQuestion(l_obj);
-        return;
-    }
-
-    alert('game starts');
-    
-    if (indx >= 2) {
-        l_obj = loopIds(indx);
-        showNextQuestion(l_obj);
-        
-        // Question and answer match
-        if (l_obj.answer == 'Yes') {
-            // Remember the id of this animal
-            ('#lastcorrect').val(l_obj.id);
-            // Look for next question in "Yes"-direction
-            indx = 2 * l_obj.id;
-            l_obj = loopIds(indx);
-            if (l_obj.id != "") {
-                l_obj = loopIds(indx);
-                // Ask that question
-                showNextQuestion(l_obj);
-            } else {
-                // Look for next question in "No"-direction
-                indx = 2 * l_obj.id;
-                l_obj = loopIds(indx);
-                if (l_obj.id != "") {
-                    l_obj = loopIds(indx);
-                    showNextQuestion(l_obj);
-                } else {
-                    // Player must add a new animal to the db
-                    teachMeMoreAnimals();
-                }
-            }
-        } else {
-            // Question and answer did not match
-            indx = (2 * gIndex) + 1;
-            if (gAdata[indx ] !== undefined) {
-                gIndex = indx + 1;
-                $('#formEttFraga').text(gAdata[gIndex].question);
-            } else {
-                // Player must add a new animal to the db
-                teachMeMoreAnimals();
-            }
-        }
-    }
-});
-
-$("#btnFormEttNo").click(function () {
-    
-});
 
 $("#radTva").click(function () {
   $(formAddAnimal).val(countQuestions());
@@ -303,8 +286,7 @@ function dbugLog() {
   $('#maxId').val(arrId[0]);
 }
 
-// call with id
-// return object gAdata[id]
+// call with id, return MongoDB-document
 function loopIds (val) {
   let l_obj = {};
   
@@ -319,7 +301,7 @@ function loopIds (val) {
         return l_obj;
     }
   }
-  // No match for
+  // No match found, return empty object
   l_obj.id = "";
   l_obj.index = "";
   l_obj.animal = "";
@@ -333,5 +315,6 @@ function showNextQuestion (obj) {
   $('#index').val(obj.index);
   $('#id').val(obj.id);
   $('#answer').val(obj.answer);
+  $('#question').val(obj.question);
   $('#formEttFraga').text(obj.question);
 }
