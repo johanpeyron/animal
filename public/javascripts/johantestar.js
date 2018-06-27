@@ -130,17 +130,23 @@ function playGame(button) {
   id = 0;
   txt = "";
 
-  // This section display infotext and the first question
-  // Documents in MongoDB with id < 4 carry infotext
-  // The document with id = 4 has the first question
-  if (Number($('#id').val()) < 4) {
-      id = Number($('#id').val()) + 2;
+  // Display infotext and the first question
+  // Documents in MongoDB with id < 8 carry infotext and questions
+  // The document with id = 8 has the first question
+  if (Number($('#id').val()) < 2) {
+      id = Number($('#id').val()) + 1;
       $('#id').val(id);
 
       if (button == 'No') {
         // Player is not in a playful mood today, reload page
         location.reload();
         return;
+      }
+
+      if ($('#id').val() == "2") {
+        // Display first question
+        id = 8;
+        $('#id').val(id);
       }
 
       l_obj = loopIds(id);
@@ -153,7 +159,11 @@ function playGame(button) {
       
   // Question and answer match
   if ($('#answer').val() == button) {
-      // Remember the id of this animal
+      // Remember what animal it is
+      l_obj = loopIds(id);
+      $('#lastcorrectanimal').val(l_obj.animal);
+      
+      // Remember the id
       $('#lastcorrect').val(id);
   }
   
@@ -200,19 +210,40 @@ function teachMeMoreAnimals(){
   question = "";
   animal = "";
   
-  // The last animal we know for sure is correct
-  // We assume our player is thinking of it
-  id = Number($('#lastcorrect').val());
-  l_obj = loopIds(id);
-  animal = l_obj.animal;
+  // Hide formEtt
+  $(formEtt).hide();
+
+  // Last correct id and animal are already saved
+  // We assume our player is thinking of that animal
   
-  // gAdata[].id = 1 contains the first add-animal question
-  l_obj = loopIds(1);
+  // gAdata[].id = 4 contains the first add-animal question
+  l_obj = loopIds(4);
   question = l_obj.question;
-  txt = question + " " + animal + ' ?';
+  txt = question + " " + $('#lastcorrectanimal').val() + ' ?';
   $('#skillnad').text(txt);
+  //$('#addQuestionId').val(l_obj.id);
 }
 
+function handleResponse(button) {
+  l_obj = {};
+  id = 0;
+  txt = "";
+  
+  // Correct guess!
+  if (button == "Yes") {
+    $('#guessIsCorrect').val(true);
+    
+    l_obj = loopIds(5);
+    txt = l_obj.question;
+    $('#skillnad').text(txt);
+  } else {
+    $('#guessIsCorrect').val(false);
+    l_obj = loopIds(6);
+    txt = l_obj.question + " "+ $('#lastcorrectanimal').val() ;
+    $('#skillnad').text(txt);
+
+    }
+}
 
 
 // Small helper functions======================================================
@@ -221,8 +252,8 @@ $("#radTva").click(function () {
   $(formAddAnimal).val(countQuestions());
 });
 
-$("#btnToggleFormDbug").click(function () {
-  $(formDbug).toggle();
+$("#btnToggleFormEtt").click(function () {
+  $(formEtt).toggle();
 });
 
 $("#btnToggleFormAddAnimal").click(function () {
@@ -314,6 +345,7 @@ function loopIds (val) {
 function showNextQuestion (obj) {
   $('#index').val(obj.index);
   $('#id').val(obj.id);
+  $('#animal').val(obj.animal);
   $('#answer').val(obj.answer);
   $('#question').val(obj.question);
   $('#formEttFraga').text(obj.question);

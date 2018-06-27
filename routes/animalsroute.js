@@ -25,7 +25,7 @@ router.post('/addanimal', function (req, res) {
   });
 });
 
-/* DELETE to deleanimal */
+/* DELETE to delete an animal */
 router.delete('/deleteanimal/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('animals');

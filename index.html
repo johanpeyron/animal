@@ -14,35 +14,41 @@
   <form id="formEtt">
     <h2 id="formEttFraga">Connecting to database, please wait . . .</h2>
     <p id="dbTxt"></p>
-    <form id="myquestion">
-      Index:<input type="text" class="dbug4" id="index">
-      Id:<input type="text" class="dbug4" id="id">
-      Last correct id: <input type="text" class="dbug4" id="lastcorrect">
-      Question:<input type="text" class="dbug1" id="question">
-      Answer:<input type="text" class="dbug4" id="answer">
-  </form>
+    Index:<input type="text" class="dbug4" id="index">
+    Id:<input type="text" class="dbug4" id="id">
+    Question:<input type="text" class="dbug5" id="question">
+    Animal:<input type="text" class="dbug2" id="animal">
+    Answer:<input type="text" class="dbug4" id="answer">
+    <br>
+    Last correct id:<input type="text" class="dbug4" id="lastcorrect">
+    Last correct animal:<input type="text" class="dbug2" id="lastcorrectanimal">
+    <br>
     <br>
     <button type="button" id="btnFormEttYes" onclick="playGame('Yes')">Yes</button>
     <button type="button" id="btnFormEttNo" onclick="playGame('No')">No</button>
     <button type="button" id="btnToggleFormAddAnimal">Toggle formAddAnimal</button>
-    <button type="button" id="btnToggleFormDbug">Toggle formDbug</button>
     <button type="button" id="btnClear">btnClear</button>
-  </form>
-  <br>
-  <br>
+    <br>
+    <br>
   </form>
   <form id="formAddAnimal">
     <h2 id="skillnad">formAddAnimal</h2>
     <br>
     <input type="text" class="dbug2" id="addAnimalId" value="addAnimalId">
     <input type="text" class="dbug2" id="addLastCorrectId" value="addLastCorrectId">
+    <input type="text" class="dbug2" id="addQuestionId" value="addQuestionId">
+    <input type="text" class="dbug2" id="guessIsCorrect" value="guessIsCorrect">
     <br>Animal:
     <br>
-    <input type="text" class="dbug3" id="addAnimalName">
+    <input type="text" class="dbug3" id="addAnimalName" required>
     <br> Question:
     <br>
-    <input type="text" class="dbug3" id="addAnimalQuestion">
+    <input type="text" class="dbug3" id="addAnimalQuestion" required>
     <br>
+    <br>
+    <input type="button" id="addAnimalYes" value="Yes, that´s my animal!" onclick="handleResponse('Yes')">
+    <input type="button" id="addAnimalNo" value="No, thats´s wrong" onclick="handleResponse('No')">
+    <button type="button" id="btnToggleFormEtt">Toggle formEtt</button>
     <br> What is the correct answer to your question?
     <br>
     <input type="radio" name="yesorno" value="Yes" checked>Yes
@@ -52,7 +58,7 @@
     <br>
     <button type="button" onclick="addAnAnimal()" id="btnformAddAnimal">Add animal</button>
   </form>
-<!--    
+  <!--    
   <form id="formDbug">
     <h2 id="skillnad">formDbug</h2>
     <input type="text" class="dbug2" id="allIds" value="allIds">
@@ -84,7 +90,7 @@
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="/javascripts/popper.min.js"></script>
   <script src="/javascripts/bootstrap.min.js"></script>
-<!--   <script src="/javascripts/global.js"></script> -->
+  <!--   <script src="/javascripts/global.js"></script> -->
   <script src="/javascripts/johantestar.js"></script>
   <script src="/javascripts/johansjava.js"></script>
 </body>
