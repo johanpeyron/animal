@@ -225,15 +225,9 @@ function teachMeMoreAnimals(){
 }
 
 function handleResponse(button) {
-<<<<<<< HEAD
-  let l_obj = {};
-  let id = 0;
-  let txt = "";
-=======
   l_obj = {};
   id = 0;
   txt = "";
->>>>>>> 7b5a5ddf4dcf45fb06e2524f3f7342325916d7e1
   
   // Correct guess!
   if (button == "Yes") {
@@ -247,13 +241,8 @@ function handleResponse(button) {
     l_obj = loopIds(6);
     txt = l_obj.question + " "+ $('#lastcorrectanimal').val() ;
     $('#skillnad').text(txt);
-<<<<<<< HEAD
-    
-  }
-=======
 
     }
->>>>>>> 7b5a5ddf4dcf45fb06e2524f3f7342325916d7e1
 }
 
 function getNewAnimalId () {
