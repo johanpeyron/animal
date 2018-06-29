@@ -10,10 +10,11 @@ let gAnswer = "";
 
 // DOM Ready =============================================================
 $(document).ready(function() {
-
+  
   // Populate the user table on initial page load
   populateTable();
-
+  
+  
 });
 
 // Functions =============================================================
@@ -45,24 +46,43 @@ function populateTable() {
 
 // Add Animal
 function addAnAnimal() {
+  let l_obj = {};
 
-  var animId = $('#addAnimalId').val();
-  var animName = $('#addAnimalName').val();
-  var animQuest = $('#addAnimalQuestion').val();
-  var animAnswer = $("input[name='yesorno']:checked").val();
+  //var newId = $('#newId').val();
+  var newId = '';
+  var lastCorrectId = $('#lastCorrectId').val();
+  var animalName = $('#addAnimalName').val();
+  var animalQuestion = $('#addAnimalQuestion').val();
+  //var correctAnswer = $("input[name='yesorno']:checked").val();
+  var correctAnswer = $("#correctAnswer").val();
 
-  if ((animId === '') || (animName === '') || (animQuest === '')) {
+  if ((animalName === '') || (animalQuestion === '')) {
     alert('Something is missing');
     return;
   }
 
+  // Find the id for our new animal
+  // User has selected 'Yes' as the correct answer to the question
+  if ('Yes' == (correctAnswer)) {
+      newId = 2 * lastCorrectId;
+  } else {
+    newId = (2 * lastCorrectId) + 1;
+  }
+
+  // Is this id already taken in the db?
+  l_obj = loopIds(newId);
+  if (l_obj.id !== '') {
+    // This id is takern, error out
+    alert('Something went wrong when adding this animal');
+    return;
+  }
 
   // Compile the animal info into one object
   var newAnimal = {
-    'id': animId,
-    'animal': animName,
-    'question': animQuest,
-    'answer': animAnswer
+    'id': newId,
+    'animal': animalName,
+    'question': animalQuestion,
+    'answer': correctAnswer
   };
 
   // Use AJAX to post the object to my addanimal service
@@ -100,7 +120,7 @@ function deleteAnAnimal() {
     }).done(function (response) {
 
       // Check for a successful (blank) response
-      if (response.msg === '') {} else {
+       if (response.msg === '') {} else {
         alert('Error: ' + response.msg);
       }
 
@@ -161,10 +181,10 @@ function playGame(button) {
   if ($('#answer').val() == button) {
       // Remember what animal it is
       l_obj = loopIds(id);
-      $('#lastcorrectanimal').val(l_obj.animal);
+      $('#lastCorrectAnimal').val(l_obj.animal);
       
-      // Remember the id
-      $('#lastcorrect').val(id);
+      // Remember the last known correct id
+      $('#lastCorrectId').val(id);
   }
   
   // Look for next question in "Yes"-direction
@@ -219,7 +239,7 @@ function teachMeMoreAnimals(){
   // gAdata[].id = 4 contains the first add-animal question
   l_obj = loopIds(4);
   question = l_obj.question;
-  txt = question + " " + $('#lastcorrectanimal').val() + ' ?';
+  txt = question + " " + $('#lastCorrectAnimal').val() + ' ?';
   $('#skillnad').text(txt);
   //$('#addQuestionId').val(l_obj.id);
 }
@@ -239,16 +259,18 @@ function handleResponse(button) {
   } else {
     $('#guessIsCorrect').val(false);
     l_obj = loopIds(6);
-    txt = l_obj.question + " "+ $('#lastcorrectanimal').val() ;
+    txt = l_obj.question + " "+ $('#lastCorrectAnimal').val() ;
     $('#skillnad').text(txt);
 
     }
 }
 
-function getNewAnimalId () {
+function getNewAnimalId (button) {
   let id = 0;
 
-  id = 1;
+  id = $('#lastCorrectId').val();
+
+
   
 
 }

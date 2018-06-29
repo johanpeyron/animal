@@ -12,7 +12,7 @@
 
 <body>
   <form id="formEtt">
-    <h2 id="formEttFraga">Connecting to database, please wait . . .</h2>
+    <h5 id="formEttFraga">Connecting to database, please wait . . .</h5>
     <p id="dbTxt"></p>
     Index:<input type="text" class="dbug4" id="index">
     Id:<input type="text" class="dbug4" id="id">
@@ -20,24 +20,18 @@
     Animal:<input type="text" class="dbug2" id="animal">
     Answer:<input type="text" class="dbug4" id="answer">
     <br>
-    Last correct id:<input type="text" class="dbug4" id="lastcorrect">
-    Last correct animal:<input type="text" class="dbug2" id="lastcorrectanimal">
-    <br>
-    <br>
     <button type="button" id="btnFormEttYes" onclick="playGame('Yes')">Yes</button>
     <button type="button" id="btnFormEttNo" onclick="playGame('No')">No</button>
     <button type="button" id="btnToggleFormAddAnimal">Toggle formAddAnimal</button>
     <button type="button" id="btnClear">btnClear</button>
     <br>
-    <br>
   </form>
   <form id="formAddAnimal">
-    <h2 id="skillnad">formAddAnimal</h2>
-    <br>
-    <input type="text" class="dbug2" id="addAnimalId" value="addAnimalId">
-    <input type="text" class="dbug2" id="addLastCorrectId" value="addLastCorrectId">
-    <input type="text" class="dbug2" id="addQuestionId" value="addQuestionId">
-    <input type="text" class="dbug2" id="guessIsCorrect" value="guessIsCorrect">
+    <h5 id="skillnad">formAddAnimal</h5>
+    <input type="text" class="dbug2" id="lastCorrectId" value="lastCorrectId">
+    <input type="text" class="dbug2" id="lastCorrectAnimal" value="lastCorrectAnimal">
+    <input type="text" class="dbug2" id="newId" value="newId">
+    <input type="text" class="dbug2" id="correctAnswer" value="correctAnswer">
     <br>Animal:
     <br>
     <input type="text" class="dbug3" id="addAnimalName" required>
