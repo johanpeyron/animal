@@ -248,7 +248,7 @@ function handleResponse(button) {
 function getNewAnimalId () {
   let id = 0;
 
-  id = 
+  id = 1;
   
 
 }
