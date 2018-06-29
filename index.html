@@ -12,13 +12,8 @@
 
 <body>
   <form id="formEtt">
-    <h5 id="formEttFraga">Connecting to database, please wait . . .</h5>
+    <h2 id="formEttFraga">Connecting to database, please wait . . .</h2>
     <p id="dbTxt"></p>
-    Index:<input type="text" class="dbug4" id="index">
-    Id:<input type="text" class="dbug4" id="id">
-    Question:<input type="text" class="dbug5" id="question">
-    Animal:<input type="text" class="dbug2" id="animal">
-    Answer:<input type="text" class="dbug4" id="answer">
     <br>
     <button type="button" id="btnFormEttYes" onclick="playGame('Yes')">Yes</button>
     <button type="button" id="btnFormEttNo" onclick="playGame('No')">No</button>
@@ -26,13 +21,25 @@
     <button type="button" id="btnClear">btnClear</button>
     <br>
   </form>
+  <br>
+  <form id=formDbug>
+    Index:
+    <input type="text" class="dbug4" id="index"> Id:
+    <input type="text" class="dbug4" id="id"> Question:
+    <input type="text" class="dbug5" id="question"> Animal:
+    <input type="text" class="dbug2" id="animal"> Answer:
+    <input type="text" class="dbug4" id="answer">answerMatchesQuestion
+    <input type="text" class="dbug4" id="answerMatchesQuestion">
+    <br> lastId:
+    <input type="text" class="dbug2" id="lastId">
+    <!-- <input type="text" class="dbug2" id="lastAnimal" value="lastAnimal"> -->
+    newId:
+    <input type="text" class="dbug2" id="newId"> correctAnswer
+    <input type="text" class="dbug2" id="correctAnswer">
+  </form>
   <form id="formAddAnimal">
-    <h5 id="skillnad">formAddAnimal</h5>
-    <input type="text" class="dbug2" id="lastCorrectId" value="lastCorrectId">
-    <input type="text" class="dbug2" id="lastCorrectAnimal" value="lastCorrectAnimal">
-    <input type="text" class="dbug2" id="newId" value="newId">
-    <input type="text" class="dbug2" id="correctAnswer" value="correctAnswer">
-    <br>Animal:
+    <h2 id="skillnad">formAddAnimal</h2>
+    Animal:
     <br>
     <input type="text" class="dbug3" id="addAnimalName" required>
     <br> Question:
@@ -44,43 +51,16 @@
     <input type="button" id="addAnimalNo" value="No, thats´s wrong" onclick="handleResponse('No')">
     <button type="button" id="btnToggleFormEtt">Toggle formEtt</button>
     <fieldset>
-    <br> What is the correct answer to your question?
-    <br>
-    <input type="radio" name="yesorno" value="Yes" checked>Yes
-    <br>
-    <input type="radio" name="yesorno" value="No">No
-  </fieldset>
+      <br> What is the correct answer to your question?
+      <br>
+      <input type="radio" name="yesorno" value="Yes" checked>Yes
+      <br>
+      <input type="radio" name="yesorno" value="No">No
+    </fieldset>
     <br>
     <br>
     <button type="button" onclick="addAnAnimal()" id="btnformAddAnimal">Add animal</button>
   </form>
-  <!--    
-  <form id="formDbug">
-    <h2 id="skillnad">formDbug</h2>
-    <input type="text" class="dbug2" id="allIds" value="allIds">
-    <input type="text" class="dbug2" id="minId" value="minId">
-    <input type="text" class="dbug2" id="maxId" value="maxId">
-    <br>
-    <input type="text" class="dbug2" id="previousID" value="previousID">
-    <input type="text" class="dbug1" id="previousQuestion" value="previousQuestion">
-    <input type="text" class="dbug1" id="previousAnimal" value="previousAnimal">
-    <br>
-    <input type="text" class="dbug2" id="currentID" value="currentID">
-    <input type="text" class="dbug1" id="currentQuestion" value="currentQuestion">
-    <input type="text" class="dbug1" id="currentAnimal" value="currentAnimal">
-    <br>
-    <input type="text" class="dbug2" id="nextID" value="nextID">
-    <input type="text" class="dbug1" id="nextQuestion" value="nextQuestion">
-    <input type="text" class="dbug1" id="nextAnimal" value="nextAnimal">
-    <br>
-    <br>
-    <button type="button" id="btnDbugYes">Yes</button>
-    <button type="button" id="btnDbugNo">No</button>
-    <button type="button" id="btnCurCount">btnCurCount+1</button>
-    <button type="button" onclick="dbugLog()" id="btnLogDbug">Log to formDbug</button>
-    <button type="submit" id="btnResetAnimals">Reset formAddAnimal</button>
-  </form>
- -->
   <!-- Bootstrap core JavaScript
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->

@@ -1,8 +1,6 @@
 // ====================   Globals   ===========================================
 // Global variable with animals array
 let gAdata = [];
-// current index in gAdata
-let gIndex = 0;
 // id of current question
 let gId = 0;
 // answer to current question
@@ -50,11 +48,10 @@ function addAnAnimal() {
 
   //var newId = $('#newId').val();
   var newId = '';
-  var lastCorrectId = $('#lastCorrectId').val();
+  var lastId = $('#lastId').val();
   var animalName = $('#addAnimalName').val();
   var animalQuestion = $('#addAnimalQuestion').val();
-  //var correctAnswer = $("input[name='yesorno']:checked").val();
-  var correctAnswer = $("#correctAnswer").val();
+  var correctAnswer = $("input[name='yesorno']:checked").val();
 
   if ((animalName === '') || (animalQuestion === '')) {
     alert('Something is missing');
@@ -64,9 +61,9 @@ function addAnAnimal() {
   // Find the id for our new animal
   // User has selected 'Yes' as the correct answer to the question
   if ('Yes' == (correctAnswer)) {
-      newId = 2 * lastCorrectId;
+      newId = 2 * lastId;
   } else {
-    newId = (2 * lastCorrectId) + 1;
+    newId = (2 * lastId) + 1;
   }
 
   // Is this id already taken in the db?
@@ -104,8 +101,8 @@ function addAnAnimal() {
   });
 }
 
-// Delete animal
-function deleteAnAnimal() {
+// Reset db by deleting documents with id > 8
+function resetDB() {
 
   // Pop up a confirmation dialog
   var confirmation = confirm('Delete this animal?');
@@ -147,15 +144,15 @@ function deleteAnAnimal() {
 
 function playGame(button) {
   l_obj = {};
-  id = 0;
+  l_id = 0;
   txt = "";
 
   // Display infotext and the first question
   // Documents in MongoDB with id < 8 carry infotext and questions
   // The document with id = 8 has the first question
   if (Number($('#id').val()) < 2) {
-      id = Number($('#id').val()) + 1;
-      $('#id').val(id);
+      l_id = Number($('#id').val()) + 1;
+      $('#id').val(l_id);
 
       if (button == 'No') {
         // Player is not in a playful mood today, reload page
@@ -165,44 +162,39 @@ function playGame(button) {
 
       if ($('#id').val() == "2") {
         // Display first question
-        id = 8;
-        $('#id').val(id);
+        l_id = 8;
+        $('#id').val(l_id);
       }
-
-      l_obj = loopIds(id);
-      showNextQuestion(l_obj);
+      
+      l_obj = loopIds(l_id);
+      askNextQuestion(l_obj);
       return;
-  }
-
-  // Respond to a question
-  id = Number($('#id').val());
-      
-  // Question and answer match
-  if ($('#answer').val() == button) {
-      // Remember what animal it is
-      l_obj = loopIds(id);
-      $('#lastCorrectAnimal').val(l_obj.animal);
-      
-      // Remember the last known correct id
-      $('#lastCorrectId').val(id);
+    }
+    
+    // Respond to a question
+    l_id = Number($('#id').val());
+    
+    // Do question and answer match?
+    if ($('#answer').val() == button) {
+        $('#answerMatchesQuestion').val('Yes');
+    } else {
+      $('#answerMatchesQuestion').val('No');
+    }
+  
+  // If this was a 'Yes-question' to our animal, try to move in a 'No-direction'
+  if ('Yes' == $('#answer').val()) {
+    l_id = l_id + 1;
+  }   else {
+    l_id = l_id - 1;
   }
   
-  // Look for next question in "Yes"-direction
-  id = 2 * id;
-  l_obj = loopIds(id);
+  // Look for the next animal.
+  l_obj = loopIds(l_id);
   if (l_obj.id != "") {
       // Ask that question
-      showNextQuestion(l_obj);
+      askNextQuestion(l_obj);
   } else {
-      // Look for next question in "No"-direction
-      id = id + 1;
-      l_obj = loopIds(id);
-      if (l_obj.id != "") {
-          showNextQuestion(l_obj);
-      } else {
-          // Player must add a new animal to the db
-          teachMeMoreAnimals();
-      }
+      teachMeMoreAnimals();
   }
 }
 
@@ -227,19 +219,16 @@ function teachMeMoreAnimals(){
   let id = 0;
   let lastcorrect = 0;
   let txt = "";
-  let question = "";
+  //let question = "";
   let animal = "";
   
   // Hide formEtt
   $(formEtt).hide();
 
-  // Last correct id and animal are already saved
-  // We assume our player is thinking of that animal
-  
   // gAdata[].id = 4 contains the first add-animal question
   l_obj = loopIds(4);
-  question = l_obj.question;
-  txt = question + " " + $('#lastCorrectAnimal').val() + ' ?';
+  //question = l_obj.question;
+  txt = l_obj.question + " " + $('#animal').val() + ' ?';
   $('#skillnad').text(txt);
   //$('#addQuestionId').val(l_obj.id);
 }
@@ -259,7 +248,7 @@ function handleResponse(button) {
   } else {
     $('#guessIsCorrect').val(false);
     l_obj = loopIds(6);
-    txt = l_obj.question + " "+ $('#lastCorrectAnimal').val() ;
+    txt = l_obj.question + " "+ $('#animal').val() ;
     $('#skillnad').text(txt);
 
     }
@@ -268,7 +257,7 @@ function handleResponse(button) {
 function getNewAnimalId (button) {
   let id = 0;
 
-  id = $('#lastCorrectId').val();
+  id = $('#lastId').val();
 
 
   
@@ -292,7 +281,7 @@ $("#btnToggleFormAddAnimal").click(function () {
 });
 
 $("#btnClear").click(function () {
-  $('#areaDbug').text('');
+  resetDB();
 });
 
 // closure, creating global counter
@@ -371,7 +360,7 @@ function loopIds (val) {
   return l_obj;
 }
 
-function showNextQuestion (obj) {
+function askNextQuestion (obj) {
   $('#index').val(obj.index);
   $('#id').val(obj.id);
   $('#animal').val(obj.animal);
