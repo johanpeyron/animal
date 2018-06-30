@@ -25,13 +25,13 @@ router.post('/addanimal', function (req, res) {
   });
 });
 
-/* DELETE tor reset database */
+/* DELETE to reset database */
 router.delete('/deleteanimal', function (req, res) {
   var db = req.db;
   var collection = db.get('animals');
-  var userToDelete = req.params.id;
+  var docToDelete = 
   collection.remove({
-    id: { $gt: 8 }
+    'id': { $gt: 8 }
   }, function (err) {
     res.send((err === null) ? {
       msg: ''

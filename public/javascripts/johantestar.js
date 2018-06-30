@@ -47,8 +47,8 @@ function addAnAnimal() {
   let l_obj = {};
 
   //var newId = $('#newId').val();
-  var newId = '';
-  var lastId = $('#lastId').val();
+  var newId = 0;
+  var oldId = Number($('#id').val());
   var animalName = $('#addAnimalName').val();
   var animalQuestion = $('#addAnimalQuestion').val();
   var correctAnswer = $("input[name='yesorno']:checked").val();
@@ -58,23 +58,21 @@ function addAnAnimal() {
     return;
   }
 
-  // Find the id for our new animal
-  // User has selected 'Yes' as the correct answer to the question
-  if ('Yes' == (correctAnswer)) {
-      newId = 2 * lastId;
+  if ('Yes' == correctAnswer) {
+      newId = 2 * oldId;
   } else {
-    newId = (2 * lastId) + 1;
+      newId = (2 * oldId) + 1;
   }
 
   // Is this id already taken in the db?
   l_obj = loopIds(newId);
-  if (l_obj.id !== '') {
+  if (l_obj.animal !== '') {
     // This id is takern, error out
     alert('Something went wrong when adding this animal');
     return;
   }
 
-  // Compile the animal info into one object
+  // Add the animal into one object
   var newAnimal = {
     'id': newId,
     'animal': animalName,
@@ -82,7 +80,7 @@ function addAnAnimal() {
     'answer': correctAnswer
   };
 
-  // Use AJAX to post the object to my addanimal service
+  // Use AJAX to post to the db
   $.ajax({
     type: 'POST',
     data: newAnimal,
@@ -92,6 +90,7 @@ function addAnAnimal() {
 
     // Check for successful (blank) response
     if (response.msg === '') {
+      alert('no return msg');
       // Update the table
       populateTable();
     } else {
@@ -104,33 +103,32 @@ function addAnAnimal() {
 // Reset db by deleting documents with id > 8
 function resetDB() {
 
-  // Pop up a confirmation dialog
-  var confirmation = confirm('Delete this animal?');
+    // Pop up a confirmation dialog
+    var confirmation = confirm('Reset the database?');
 
-  // Check and make sure the user confirmed
-  if (confirmation === true) {
+    // Check and make sure the user confirmed
+    if (confirmation === true) {
 
-    // If they did, do our delete
-    $.ajax({
-      type: 'DELETE',
-      url: '/animalsroute/deleteanimal/' + $('#deleteAnimalId').val()
-    }).done(function (response) {
+        // If they did, do our delete
+        $.ajax({
+            type: 'DELETE',
+            url: '/animalsroute/deleteanimal'
+        }).done(function (response) {
 
-      // Check for a successful (blank) response
-       if (response.msg === '') {} else {
-        alert('Error: ' + response.msg);
-      }
+            // Check for a successful (blank) response
+            if (response.msg === '') {} else {
+              alert('Error: ' + response.msg);
+            }
 
-      // Update the table
-      populateTable();
+            // Update the table
+            populateTable();
+        });
+    } else {
 
-    });
-  } else {
+        // If they said no to the confirm, do nothing
+        return false;
 
-    // If they said no to the confirm, do nothing
-    return false;
-
-  }
+    }
 }
 
 
@@ -143,32 +141,32 @@ function resetDB() {
 // ====================   Functions   =========================================
 
 function playGame(button) {
-  l_obj = {};
-  l_id = 0;
-  txt = "";
+    l_obj = {};
+    l_id = 0;
+    txt = "";
 
-  // Display infotext and the first question
-  // Documents in MongoDB with id < 8 carry infotext and questions
-  // The document with id = 8 has the first question
-  if (Number($('#id').val()) < 2) {
-      l_id = Number($('#id').val()) + 1;
-      $('#id').val(l_id);
-
-      if (button == 'No') {
-        // Player is not in a playful mood today, reload page
-        location.reload();
-        return;
-      }
-
-      if ($('#id').val() == "2") {
-        // Display first question
-        l_id = 8;
+    // Display infotext and the first question
+    // Documents in MongoDB with id < 8 carry infotext and questions
+    // The document with id = 8 has the first question
+    if (Number($('#id').val()) < 2) {
+        l_id = Number($('#id').val()) + 1;
         $('#id').val(l_id);
-      }
-      
-      l_obj = loopIds(l_id);
-      askNextQuestion(l_obj);
-      return;
+
+        if (button == 'No') {
+          // Player is not in a playful mood today, reload page
+          location.reload();
+          return;
+        }
+
+        if ($('#id').val() == "2") {
+          // Display first question
+          l_id = 8;
+          $('#id').val(l_id);
+        }
+        
+        l_obj = loopIds(l_id);
+        askQuestion(l_obj);
+        return;
     }
     
     // Respond to a question
@@ -176,41 +174,32 @@ function playGame(button) {
     
     // Do question and answer match?
     if ($('#answer').val() == button) {
-        $('#answerMatchesQuestion').val('Yes');
+      $('#answerMatchesQuestion').val('Yes');
     } else {
       $('#answerMatchesQuestion').val('No');
     }
-  
-  // If this was a 'Yes-question' to our animal, try to move in a 'No-direction'
-  if ('Yes' == $('#answer').val()) {
-    l_id = l_id + 1;
-  }   else {
-    l_id = l_id - 1;
-  }
-  
-  // Look for the next animal.
-  l_obj = loopIds(l_id);
-  if (l_obj.id != "") {
-      // Ask that question
-      askNextQuestion(l_obj);
-  } else {
-      teachMeMoreAnimals();
-  }
-}
 
-function askQuestion(id) {
-  if (id < (gAdata.length - 1)) {
-    if (doIKnowMore(id)) {
-      $('#formEttFraga').text(gAdata[gId].question);
-      return true;
+    // Copy prev info
+    copyPrevious();
+
+    if ('Yes' == $('#answerMatchesQuestion').val()) {
+        // Move down the tree
+        l_id = 2 *l_id;
+    }   else if ('Yes' == $('#answer').val()) {
+        // Look for a No on the same node
+        l_id = l_id + 1;
+      }  else {
+        // Look for a Yes on the same node
+        l_id = l_id - 1;
     }
-    // No more questions found
-    return false;
-  }
-}
 
-function doIKnowMore(id) {
-  return (gAdata[gId] !== undefined);
+    l_obj = loopIds(l_id);
+    if (l_obj.id != "") {
+        // Ask that question
+        askQuestion(l_obj);
+    } else {
+        teachMeMoreAnimals();
+    }
 }
 
 function teachMeMoreAnimals(){
@@ -257,7 +246,7 @@ function handleResponse(button) {
 function getNewAnimalId (button) {
   let id = 0;
 
-  id = $('#lastId').val();
+  id = $('#oldId').val();
 
 
   
@@ -280,7 +269,7 @@ $("#btnToggleFormAddAnimal").click(function () {
   $(formAddAnimal).toggle();
 });
 
-$("#btnClear").click(function () {
+$("#btnResetDB").click(function () {
   resetDB();
 });
 
@@ -351,7 +340,7 @@ function loopIds (val) {
     }
   }
   // No match found, return empty object
-  l_obj.id = "";
+  l_obj.id = 0;
   l_obj.index = "";
   l_obj.animal = "";
   l_obj.answer = "";
@@ -360,11 +349,20 @@ function loopIds (val) {
   return l_obj;
 }
 
-function askNextQuestion (obj) {
+function askQuestion (obj) {
   $('#index').val(obj.index);
   $('#id').val(obj.id);
   $('#animal').val(obj.animal);
   $('#answer').val(obj.answer);
   $('#question').val(obj.question);
   $('#formEttFraga').text(obj.question);
+}
+
+function copyPrevious () {
+  $('#previndex').val($('#index').val());
+  $('#previd').val($('#id').val());
+  $('#prevquestion').val($('#question').val());
+  $('#prevanimal').val($('#animal').val());
+  $('#prevanswer').val($('#answer').val());
+  $('#prevanswerMatchesQuestion').val($('#answerMatchesQuestion').val());
 }
