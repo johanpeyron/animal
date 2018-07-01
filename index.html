@@ -48,24 +48,24 @@
     <input type="text" class="dbug2" id="correctAnswer">
   </form>
   <form id="formAddAnimal">
-    <h2 id="skillnad">formAddAnimal</h2>
+    <h2 id="formAddAnimalFraga">formAddAnimal</h2>
     Animal:
     <br>
-    <input type="text" class="dbug3" id="addAnimalName" required>
+    <input type="text" class="dbug3" id="formAddAnimalAnimal" required>
     <br> Question:
     <br>
-    <input type="text" class="dbug3" id="addAnimalQuestion" required>
+    <input type="text" class="dbug3" id="formAddAnimalQuestion" required>
     <br>
     <br>
-    <input type="button" id="addAnimalYes" value="Yes, that´s my animal!" onclick="handleResponse('Yes')">
-    <input type="button" id="addAnimalNo" value="No, thats´s wrong" onclick="handleResponse('No')">
+    <input type="button" id="addAnimalYes" value="Yes, that´s my animal!" onclick="formAddAnimalResponse('Yes')">
+    <input type="button" id="addAnimalNo" value="No, thats´s wrong" onclick="formAddAnimalResponse('No')">
     <button type="button" id="btnToggleFormEtt">Toggle formEtt</button>
     <fieldset>
       <br> What is the correct answer to your question?
       <br>
-      <input type="radio" name="yesorno" value="Yes" checked>Yes
+      <input type="radio" name="formAddAnimalCorrectAnswer" value="Yes" checked>Yes
       <br>
-      <input type="radio" name="yesorno" value="No">No
+      <input type="radio" name="formAddAnimalCorrectAnswer" value="No">No
     </fieldset>
     <br>
     <br>
