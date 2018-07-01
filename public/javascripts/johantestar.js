@@ -45,28 +45,29 @@ function populateTable() {
 // Add Animal
 function addAnAnimal() {
   let l_obj = {};
-  //let newAnimal = {id:0, animal:"", question:"", answer:""}
   let newAnimal = {};
   let animalDate = "2018-01-22T14:56:59.301Z";
-  //let animalDate = new Date();
-  //let dateTemp = new Date("1900-01-01");
-  //let animalDate = dateTemp.toISOString();
 
-  //var newId = $('#newId').val();
   var newId = 0;
   var oldId = Number($('#id').val());
   var animalName = $('#addAnimalName').val();
   var animalQuestion = $('#addAnimalQuestion').val();
   var correctAnswer = $("input[name='yesorno']:checked").val();
+  var answerMatch = $('#answerMatchesQuestion').val();
 
   if ((animalName === '') || (animalQuestion === '')) {
     alert('Something is missing');
     return;
   }
 
-  if ('Yes' == correctAnswer) {
+  if ('Yes' == answerMatch && 'Yes' == correctAnswer) {
+      //Add a Yes-node
       newId = 2 * oldId;
-  } else {
+    } else if ('Yes' == answerMatch && 'No' == correctAnswer) {
+      //Add a No-node
+      newId = (2 * oldId) + 1;
+  } else if ('No' == answerMatch && 'Yes' == correctAnswer) {
+      // Stay on the node, add a no
       newId = (2 * oldId) + 1;
   }
 
@@ -90,14 +91,13 @@ function addAnAnimal() {
     type: 'POST',
     data: newAnimal,
     url: '/animalsroute/addanimal',
-    dataType: 'application/json'
-    //dataType: 'JSON'
+    //dataType: 'application/json'
+    dataType: 'JSON'
   }).done(function (response) {
 
     // Check for successful (blank) response
     if (response.msg === '') {
-      // Update the table
-      populateTable();
+      location.reload();
       return;
     } else {
       // If something goes wrong, alert the error message that our service returned
@@ -150,6 +150,7 @@ function playGame(button) {
     l_obj = {};
     l_id = 0;
     txt = "";
+    answerMatches = "";
 
     // Display infotext and the first question
     // Documents in MongoDB with id < 8 carry infotext and questions
@@ -184,28 +185,35 @@ function playGame(button) {
     } else {
       $('#answerMatchesQuestion').val('No');
     }
+    answerMatches = $('#answerMatchesQuestion').val();
 
     // Copy prev info
     copyPrevious();
 
-    if ('Yes' == $('#answerMatchesQuestion').val()) {
+    if ('Yes' == answerMatches) {
         // Move down the tree
         l_id = 2 *l_id;
-    }   else if ('Yes' == $('#answer').val()) {
-        // Look for a No on the same node
-        l_id = l_id + 1;
-      }  else {
-        // Look for a Yes on the same node
-        l_id = l_id - 1;
-    }
-
-    l_obj = loopIds(l_id);
-    if (l_obj.id != "") {
-        // Ask that question
-        askQuestion(l_obj);
-    } else {
-        teachMeMoreAnimals();
-    }
+        l_obj = loopIds(l_id);
+        if (l_obj.id != "") {
+            askQuestion(l_obj);
+        } else {
+            l_obj = loopIds(l_id + 1);
+            if (l_obj.id != "") {
+                askQuestion(l_obj);
+            } else {
+                teachMeMoreAnimals();
+            }
+          }
+        } else {
+          // Answer and questions doesn´t match  
+          l_id = ('Yes' == $('#answer').val()) ? l_id + 1 : l_id - 1; 
+          l_obj = loopIds(l_id);
+          if (l_obj.id != "") {
+              askQuestion(l_obj);
+          } else {
+              teachMeMoreAnimals();
+          }
+      }
 }
 
 function teachMeMoreAnimals(){
