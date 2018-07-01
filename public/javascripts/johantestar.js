@@ -62,33 +62,19 @@ function populateTable() {
 
 // Reset db to initial state
 function resetDB() {
+    $.ajax({
+        type: 'DELETE',
+        url: '/animalsroute/deleteanimal'
+    }).done(function (response) {
 
-  // Pop up a confirmation dialog
-  //var confirmation = confirm('Reset the database?');
+        // Check for a successful (blank) response
+        if (response.msg === '') {} else {
+          alert('Error: ' + response.msg);
+        }
 
-  // Check and make sure the user confirmed
-  //if (confirmation === true) {
-
-      // If they did, do our delete
-      $.ajax({
-          type: 'DELETE',
-          url: '/animalsroute/deleteanimal'
-      }).done(function (response) {
-
-          // Check for a successful (blank) response
-          if (response.msg === '') {} else {
-            alert('Error: ' + response.msg);
-          }
-
-          // Update the table
-          populateTable();
-      });
-/*   } else {
-
-      // If they said no to the confirm, do nothing
-      return false;
-
-  } */
+        // Go get the fresh data
+        populateTable();
+    });
 }
 
 function playGame(button) {
@@ -195,21 +181,24 @@ function addAnAnimal() {
     var oldId = Number($('#id').val());
     var animal = $('#formAddAnimalAnimal').val();
     var question = $('#formAddAnimalQuestion').val();
-    var correctAnswer = $("input[name='formAddAnimalCorrectAnswer']:checked").val();
-    var answerMatchQuestion = $('#prevanswerMatchesQuestion').val();
+    var correctAnsNewQuest = $("input[name='formAddAnimalCorrectAnswer']:checked").val();
+    var prevAnswMatchPrevQuest = $('#prevanswerMatchesQuestion').val();
+    var prevAnswer = $('#prevanswer').val();
 
     if ((animal === '') || (question === '')) {
         alert('Something is missing');
         return;
     }
 
-    if ('Yes' == answerMatchQuestion && 'Yes' == correctAnswer) {
-        //Add a Yes-node
-        newId = 2 * oldId;
-    } else if ('Yes' == answerMatchQuestion && 'No' == correctAnswer) {
-        //Add a No-node
-        newId = (2 * oldId) + 1;
-    } else if ('No' == answerMatchQuestion && 'Yes' == correctAnswer) {
+    if ('Yes' == prevAnswMatchPrevQuest && 'Yes' == prevAnswer) {
+        if ('Yes' == correctAnsNewQuest) {
+            //Add a Yes-node
+            newId = 2 * oldId;
+        } else {
+            //Add a No-node
+            newId = (2 * oldId) + 1;
+        }
+    } else if ('No' == prevAnswMatchPrevQuest && 'Yes' == prevAnswer) {
         // Stay on the node, add a no
         newId = oldId + 1;
     } else  {
@@ -229,15 +218,14 @@ function addAnAnimal() {
     newAnimal.id = newId;
     newAnimal.animal = animal;
     newAnimal.question = question;
-    newAnimal.answer = correctAnswer;
-    newAnimal.date = animalDate;
+    newAnimal.answer = correctAnsNewQuest;
+    newAnimal.keep = "0";
 
     // Use AJAX to post to the db
     $.ajax({
         type: 'POST',
         data: newAnimal,
         url: '/animalsroute/addanimal',
-        //dataType: 'application/json'
         dataType: 'JSON'
     }).done(function (response) {
         // Check for successful (blank) response
@@ -272,64 +260,10 @@ function teachMeMoreAnimals(){
 }
 
 
-
-/* function getNewAnimalId (button) {
-  let id = 0;
-
-  id = $('#oldId').val();
-} */
-
-
-// closure, creating global counter
-// invoke with countQuestions();
-/* var countQuestions = (function () {
-  var counter = 0;
-  return function () {
-    counter += 1;
-    return counter;
-  };
-})(); */
-
-// closure, keep track of current id
-/* var curId = (function (val) {
-  var l_val = 0;
-  return function () {
-    l_val = val;
-    return l_val;
-  };
-})(); */
-
-function clearUserInput() {
-  $('#formAddAnimal').reset();
-}
 // Prevent form submission
 $( "formAddAnimal" ).submit(function( event ) {
   event.preventDefault();
 });
-
-/* function dbugLog() {
-  var arrAnimal = [];
-  var arrId = [];
-  var i = 0;
-  var txt = "";
-
-  arrAnimal = JSON.parse(document.getElementById('dbTxt').innerHTML);
-  for (i = 0; i < arrAnimal.length; i++) {
-    arrId.push(arrAnimal[i].id);
-  }
-
-  $('#allIds').val(arrId);
-
-  // Sort arrId ascending and display min value
-  arrId.sort(function (a, b) {
-    return a - b;
-  });
-  $('#minId').val(arrId[0]);
-
-  // display max value
-  arrId.reverse();
-  $('#maxId').val(arrId[0]);
-} */
 
 // get MongoDB-document based on gAdata[].id
 function loopIds (val) {
