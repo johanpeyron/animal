@@ -31,7 +31,7 @@ router.delete('/deleteanimal', function (req, res) {
   var collection = db.get('animals');
   var docToDelete = 
   collection.remove({
-    'id': { $gt: 8 }
+    'date': { $gt: "1999-01-01T00:00:00.000Z" }
   }, function (err) {
     res.send((err === null) ? {
       msg: ''

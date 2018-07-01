@@ -45,6 +45,12 @@ function populateTable() {
 // Add Animal
 function addAnAnimal() {
   let l_obj = {};
+  //let newAnimal = {id:0, animal:"", question:"", answer:""}
+  let newAnimal = {};
+  let animalDate = "2018-01-22T14:56:59.301Z";
+  //let animalDate = new Date();
+  //let dateTemp = new Date("1900-01-01");
+  //let animalDate = dateTemp.toISOString();
 
   //var newId = $('#newId').val();
   var newId = 0;
@@ -67,32 +73,32 @@ function addAnAnimal() {
   // Is this id already taken in the db?
   l_obj = loopIds(newId);
   if (l_obj.animal !== '') {
-    // This id is takern, error out
+    // This id is taken, error out
     alert('Something went wrong when adding this animal');
     return;
   }
 
   // Add the animal into one object
-  var newAnimal = {
-    'id': newId,
-    'animal': animalName,
-    'question': animalQuestion,
-    'answer': correctAnswer
-  };
+  newAnimal.id = newId;
+  newAnimal.animal = animalName;
+  newAnimal.question = animalQuestion;
+  newAnimal.answer = correctAnswer;
+  newAnimal.date = animalDate;
 
   // Use AJAX to post to the db
   $.ajax({
     type: 'POST',
     data: newAnimal,
     url: '/animalsroute/addanimal',
-    dataType: 'JSON'
+    dataType: 'application/json'
+    //dataType: 'JSON'
   }).done(function (response) {
 
     // Check for successful (blank) response
     if (response.msg === '') {
-      alert('no return msg');
       // Update the table
       populateTable();
+      return;
     } else {
       // If something goes wrong, alert the error message that our service returned
       alert('Error: ' + response.msg);
@@ -223,24 +229,27 @@ function teachMeMoreAnimals(){
 }
 
 function handleResponse(button) {
-  l_obj = {};
-  id = 0;
-  txt = "";
+  let l_obj = {};
+  let l_id = 0;
+  let txt = "";
+  let isCorrect = false;
   
   // Correct guess!
   if (button == "Yes") {
-    $('#guessIsCorrect').val(true);
-    
-    l_obj = loopIds(5);
-    txt = l_obj.question;
-    $('#skillnad').text(txt);
+    isCorrect = true;
+    l_id = 5;
   } else {
-    $('#guessIsCorrect').val(false);
-    l_obj = loopIds(6);
-    txt = l_obj.question + " "+ $('#animal').val() ;
-    $('#skillnad').text(txt);
-
-    }
+    isCorrect = false;
+    l_id = 6;
+    
+  }
+  l_obj = loopIds(l_id);
+  txt = l_obj.question;
+  if (6 == l_id) {
+    txt += " "+ $('#animal').val() ;
+  }
+  
+  $('#skillnad').text(txt);
 }
 
 function getNewAnimalId (button) {
