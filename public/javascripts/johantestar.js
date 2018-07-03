@@ -1,10 +1,6 @@
 // ====================   Globals   ===========================================
 // Global array with data from MongoDB
 let gAdata = [];
-// id of current question
-//let gId = 0;
-// answer to current question
-//let gAnswer = "";
 
 // DOM Ready ==================================================================
 $(document).ready(function() {
@@ -14,10 +10,6 @@ $(document).ready(function() {
 });
 
 // ====================   Helper functions    =================================
-
-/* $("#radTva").click(function () {
-  $(formAddAnimal).val(countQuestions());
-}); */
 
 $("#btnToggleFormEtt").click(function () {
   $(formEtt).toggle();
@@ -249,7 +241,7 @@ function teachMeMoreAnimals(){
   let animal = "";
   
   // Hide formEtt
-  $(formEtt).hide();
+  //$(formEtt).hide();
 
   // gAdata[].id = 4 contains the first add-animal question
   l_obj = loopIds(4);
