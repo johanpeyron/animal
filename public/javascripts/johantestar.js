@@ -84,7 +84,7 @@ function playGame(button) {
 
         if (button == 'No') {
           // Player is not in a playful mood today, reload page
-          location.reload();
+          location.reload(true);
           return;
         }
 
@@ -114,7 +114,7 @@ function playGame(button) {
     copyPrevious();
 
     if ('Yes' == answerMatches) {
-        // Move one node down the binary tree
+        // Move one question-node down the binary tree
         l_id = 2 *l_id;
         l_obj = loopIds(l_id);
         if (l_obj.id != "") {
@@ -168,7 +168,7 @@ function addAnAnimal() {
     let l_obj = {};
     let newAnimal = {};
     let animalDate = "2018-01-22T14:56:59.301Z";
-
+    
     var newId = 0;
     var oldId = Number($('#id').val());
     var animal = $('#formAddAnimalAnimal').val();
@@ -182,20 +182,20 @@ function addAnAnimal() {
         return;
     }
 
-    if ('Yes' == prevAnswMatchPrevQuest && 'Yes' == prevAnswer) {
-        if ('Yes' == correctAnsNewQuest) {
-            //Add a Yes-node
-            newId = 2 * oldId;
-        } else {
-            //Add a No-node
-            newId = (2 * oldId) + 1;
+    if ('Yes' == prevAnswMatchPrevQuest) {
+        // Add a node
+        newId = ('Yes' == correctAnsNewQuest) ? 2 * oldId : (2 * oldId) + 1;
+    } else {
+        // Add a leaf
+        id ('No' == correctAnsNewQuest) {
+            // Is there a 'Yes'-leaf? Update it to 'No'
+            l_obj = loopIds(oldId + 1);
+            if (l_obj.animal !== '') {
+                updateId(l_obj.animal);
+            }
         }
-    } else if ('No' == prevAnswMatchPrevQuest && 'Yes' == prevAnswer) {
-        // Stay on the node, add a no
-        newId = oldId + 1;
-    } else  {
-        // Stay on the node, add a yes
-        newId = oldId - 1;
+        
+        newId = ('Yes' == correctAnsNewQuest) ? oldId + 1 : oldId - 1;
     }
 
     // Is this id already taken in the db?
@@ -222,7 +222,7 @@ function addAnAnimal() {
     }).done(function (response) {
         // Check for successful (blank) response
         if (response.msg === '') {
-            location.reload();
+            location.reload(true);
             return;
         } else {
             // If something goes wrong, alert the error message that our service returned
@@ -243,8 +243,8 @@ function teachMeMoreAnimals(){
   // Hide formEtt
   //$(formEtt).hide();
 
-  // gAdata[].id = 4 contains the first add-animal question
-  l_obj = loopIds(4);
+  id = $('#answerMatchesQuestion').val() ? 6 : 4;
+  l_obj = loopIds(id);
   //question = l_obj.question;
   txt = l_obj.question + " " + $('#animal').val() + ' ?';
   $('#formAddAnimalFraga').text(txt);
@@ -298,4 +298,8 @@ function copyPrevious () {
     $('#prevanimal').val($('#animal').val());
     $('#prevanswer').val($('#answer').val());
     $('#prevanswerMatchesQuestion').val($('#answerMatchesQuestion').val());
+}
+
+function updateId (obj) {
+    
 }
