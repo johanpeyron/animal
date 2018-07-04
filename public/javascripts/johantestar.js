@@ -64,7 +64,7 @@ function resetDB() {
           alert('Error: ' + response.msg);
         }
 
-        // Go get the fresh data
+        // Go get fresh data
         populateTable();
     });
 }
@@ -191,7 +191,7 @@ function addAnAnimal() {
             // Is there a 'Yes'-leaf? Update it to 'No'
             l_obj = loopIds(oldId + 1);
             if (l_obj.animal !== '') {
-                updateId(l_obj.animal);
+                updateId(l_obj);
             }
         }
         
@@ -300,6 +300,25 @@ function copyPrevious () {
     $('#prevanswerMatchesQuestion').val($('#answerMatchesQuestion').val());
 }
 
-function updateId (obj) {
-    
+// Update Animal Id
+function updateId(updAnimal) {
+
+    // Use AJAX to PUT and update the animal-id
+    $.ajax({
+    type: 'PUT',
+    data: updAnimal,
+    url: '/updateanimal/updateuser',
+    dataType: 'JSON'
+    }).done(function( response ) {
+        // Check for successful (blank) response
+        if (response.msg === '') {
+
+            // Update the table
+            populateTable();
+        }
+        else {
+            // If something goes wrong, alert the error message that our service returned
+            alert('Error: ' + response.msg);
+            }
+    });
 }

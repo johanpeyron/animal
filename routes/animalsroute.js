@@ -41,4 +41,22 @@ router.delete('/deleteanimal', function (req, res) {
   });
 });
 
+/* PUT to update animalid */
+router.put('/updateanimal/:id', function(req, res) {
+  var db = req.db;
+  var collection = db.get('userlist');
+  
+  if(!req.body) { return res.send(400); }
+  
+  collection.findById(req.params.id, (e, data) => {
+    if(e) { return res.send(500, e);}
+
+    collection.updateById(req.params.id, req.body, (err) => {
+      if(err) { return res.send(500, err);}
+
+      res.json(data);
+    });
+  });
+});
+
 module.exports = router;
