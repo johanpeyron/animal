@@ -41,10 +41,26 @@ router.delete('/deleteanimal', function (req, res) {
   });
 });
 
+/* DELETE to reset database */
+router.delete('/deleteanimal2', function (req, res) {
+  var db = req.db;
+  var collection = db.get('animals');
+  var docToDelete = 
+  collection.remove({
+    'id': { $gt: 8 }
+  }, function (err) {
+    res.send((err === null) ? {
+      msg: ''
+    } : {
+      msg: 'error ' + err
+    });
+  });
+});
+
 /* PUT to update animalid */
 router.put('/updateanimal/:id', function(req, res) {
   var db = req.db;
-  var collection = db.get('userlist');
+  var collection = db.get('animals');
   
   if(!req.body) { return res.send(400); }
   

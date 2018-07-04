@@ -187,10 +187,11 @@ function addAnAnimal() {
         newId = ('Yes' == correctAnsNewQuest) ? 2 * oldId : (2 * oldId) + 1;
     } else {
         // Add a leaf
-        id ('No' == correctAnsNewQuest) {
+        if ('No' == correctAnsNewQuest) {
             // Is there a 'Yes'-leaf? Update it to 'No'
-            l_obj = loopIds(oldId + 1);
-            if (l_obj.animal !== '') {
+            l_obj = loopIds(oldId);
+            if (l_obj.answer == 'Yes') {
+                l_obj.id = oldId + 1;
                 updateId(l_obj);
             }
         }
@@ -307,7 +308,7 @@ function updateId(updAnimal) {
     $.ajax({
     type: 'PUT',
     data: updAnimal,
-    url: '/updateanimal/updateuser',
+    url: '/updateanimal/' + updAnimal.oldId,
     dataType: 'JSON'
     }).done(function( response ) {
         // Check for successful (blank) response
