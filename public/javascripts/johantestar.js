@@ -25,7 +25,10 @@ $("#btnResetDB").click(function () {
   resetDB();
 });
 
-// ====================   Functions   =========================================
+$("#btnUpdateId").click(function () {
+    dBugPUT();
+  });
+  // ====================   Functions   =========================================
 
 
 // Fill table with data
@@ -170,7 +173,7 @@ function addAnAnimal() {
     let animalDate = "2018-01-22T14:56:59.301Z";
     
     var newId = 0;
-    var oldId = Number($('#id').val());
+    var oldid = Number($('#id').val());
     var animal = $('#formAddAnimalAnimal').val();
     var question = $('#formAddAnimalQuestion').val();
     var correctAnsNewQuest = $("input[name='formAddAnimalCorrectAnswer']:checked").val();
@@ -184,19 +187,19 @@ function addAnAnimal() {
 
     if ('Yes' == prevAnswMatchPrevQuest) {
         // Add a node
-        newId = ('Yes' == correctAnsNewQuest) ? 2 * oldId : (2 * oldId) + 1;
+        newId = ('Yes' == correctAnsNewQuest) ? 2 * oldid : (2 * oldid) + 1;
     } else {
         // Add a leaf
         if ('No' == correctAnsNewQuest) {
             // Is there a 'Yes'-leaf? Update it to 'No'
-            l_obj = loopIds(oldId);
+            l_obj = loopIds(oldid);
             if (l_obj.answer == 'Yes') {
-                l_obj.id = oldId + 1;
+                l_obj.id = oldid + 1;
                 updateId(l_obj);
             }
         }
         
-        newId = ('Yes' == correctAnsNewQuest) ? oldId + 1 : oldId - 1;
+        newId = ('Yes' == correctAnsNewQuest) ? oldid + 1 : oldid - 1;
     }
 
     // Is this id already taken in the db?
@@ -301,14 +304,30 @@ function copyPrevious () {
     $('#prevanswerMatchesQuestion').val($('#answerMatchesQuestion').val());
 }
 
+function dBugPUT () {
+    let l_obj = {};
+    let oldid = $('#id').val();
+
+
+    // PUT didn´t work, try DELETE + POST
+    l_obj = loopIds(oldid);
+    if (l_obj.answer == 'Yes') {
+        l_obj.oldid = oldid;
+        l_obj.id = oldid + 1;
+        updateId(l_obj);
+    }
+}
+
+
 // Update Animal Id
 function updateId(updAnimal) {
-
+console.log(updAnimal);
     // Use AJAX to PUT and update the animal-id
     $.ajax({
     type: 'PUT',
+    //data: updAnimal,
     data: updAnimal,
-    url: '/updateanimal/' + updAnimal.oldId,
+    url: '/animalsroute/updateanimal4',
     dataType: 'JSON'
     }).done(function( response ) {
         // Check for successful (blank) response
@@ -321,5 +340,22 @@ function updateId(updAnimal) {
             // If something goes wrong, alert the error message that our service returned
             alert('Error: ' + response.msg);
             }
+    });
+}
+
+
+function resetDB() {
+    $.ajax({
+        type: 'DELETE',
+        url: '/animalsroute/deleteanimal'
+    }).done(function (response) {
+
+        // Check for a successful (blank) response
+        if (response.msg === '') {} else {
+          alert('Error: ' + response.msg);
+        }
+
+        // Go get fresh data
+        populateTable();
     });
 }

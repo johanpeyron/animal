@@ -41,38 +41,114 @@ router.delete('/deleteanimal', function (req, res) {
   });
 });
 
-/* DELETE to reset database */
-router.delete('/deleteanimal2', function (req, res) {
-  var db = req.db;
-  var collection = db.get('animals');
-  var docToDelete = 
-  collection.remove({
-    'id': { $gt: 8 }
-  }, function (err) {
-    res.send((err === null) ? {
-      msg: ''
-    } : {
-      msg: 'error ' + err
-    });
-  });
+/* https://github.com/FSojitra/Node-Express-MongoDB-REST-API-jQuery-AJAX */
+router.put('/user/:id', function(req, res) {
+  var id = req.params.id;
+  console.log("id"+id);
+  var personInfo = req.body;
+  console.log()
+
+  User.update({unique_id:id}, {
+    username: personInfo.username, 
+    fullname: personInfo.fullname, 
+    age: personInfo.age
+  }, function(err, rawResponse) {
+   console.log(rawResponse);
+ });
+
 });
 
 /* PUT to update animalid */
-router.put('/updateanimal/:id', function(req, res) {
+router.put('/updateanimal', function(req, res) {
   var db = req.db;
   var collection = db.get('animals');
+  var id = req.params.id;
+  var oldid = req.params.oldid;
   
   if(!req.body) { return res.send(400); }
   
-  collection.findById(req.params.id, (e, data) => {
-    if(e) { return res.send(500, e);}
+/*   collection.findById(req.params.oldid, (e, data) => {
+    if(e) { return res.send(501, e);} */
 
-    collection.updateById(req.params.id, req.body, (err) => {
-      if(err) { return res.send(500, err);}
+/*     collection.updateById(req.params.id, req.body, (err) => {
+      if(err) { return res.send(502, err);}
 
       res.json(data);
-    });
+    }); */
+ // });
+});
+
+// PUT test Node.js MongoDB Driver API
+router.put('/updateanimal2', function(req, res) {
+  console.log(req.params.data);
+  console.log(req.params);
+  var db = req.db;
+  var collection = db.get('animals');
+  var newid = req.data.id;
+  console.log(newid);
+  var oldid = req.data.oldid;
+  console.log(oldid);
+  
+  if(!req.body) { return res.send(400); }
+  
+  collection.update({id:oldid}, {$set: {id:newid}},
+     function (err, result) {
+    res.send(
+      (err === null) ? {
+        msg: ''
+      } : {
+        msg: err
+      }
+    );
   });
+});
+
+// PUT test Node.js MongoDB Driver API
+router.put('/updateanimal3', function(req, res) {
+  console.log('req.body.body= ' + req.body);
+  console.log('req.body.id= ' + req.body.id);
+  var db = req.db;
+  var collection = db.get('animals');
+  var newid = req.params.id;
+  console.log(newid);
+  var oldid = req.params.oldid;
+  console.log(oldid);
+  
+  if(!req.body) { return res.send(400); }
+  
+  collection.update({id:oldid}, {$set: {id:newid}},
+     function (err, result) {
+    res.send(
+      (err === null) ? {
+        msg: ''
+      } : {
+        msg: err
+      }
+    );
+  });
+});
+
+router.put('/updateanimal4', function(req, res) {
+    var db = req.db;
+    var collection = db.get('animals');
+
+    if(!req.body) { return res.send(400); }
+
+    collection.findById(req.body.oldid, function(e,data){
+        if(e) { return res.send(500, e); }
+
+        if(!data) { return res.send(404); }
+
+        var update = { title : req.body.id };
+
+        collection.updateById(req.body, update, function(err) {
+            if(err) {
+                return res.send(500, err);
+            }
+
+            res.json(data);
+        });
+    });
 });
 
 module.exports = router;
