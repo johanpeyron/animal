@@ -26,12 +26,31 @@ router.post('/addanimal', function (req, res) {
 });
 
 /* DELETE to reset database */
-router.delete('/deleteanimal', function (req, res) {
+router.delete('/resetdb', function (req, res) {
   var db = req.db;
   var collection = db.get('animals');
   var docToDelete = 
   collection.remove({
     'keep': { $lt: "1" }
+  }, function (err) {
+    res.send((err === null) ? {
+      msg: ''
+    } : {
+      msg: 'error ' + err
+    });
+  });
+});
+
+/* DELETE one document */
+router.delete('/deleteanimal', function (req, res) {
+  console.log('arrived at deleteanimal');
+  var db = req.db;
+  var collection = db.get('animals');
+  var docToDelete = req.data.id;
+  console.log('docToDelete = ' + docToDelete);
+
+  collection.remove({
+    'id': docToDelete
   }, function (err) {
     res.send((err === null) ? {
       msg: ''
@@ -104,19 +123,19 @@ router.put('/updateanimal2', function(req, res) {
 });
 
 // PUT test Node.js MongoDB Driver API
-router.put('/updateanimal3', function(req, res) {
-  console.log('req.body.body= ' + req.body);
-  console.log('req.body.id= ' + req.body.id);
+router.put('/updateanimal3/:oldid/:newid', function(req, res)  {
   var db = req.db;
   var collection = db.get('animals');
-  var newid = req.params.id;
-  console.log(newid);
-  var oldid = req.params.oldid;
-  console.log(oldid);
+  if (typeof req.params.oldid !== 'undefined' ) {
+    console.log('req.params.oldid = ' + req.params.oldid);
+  }
+  if (typeof req.params.newid !== 'undefined' ) {
+    console.log('req.params.newid = ' + req.params.newid);
+  }
+ let gammalt = req.params.oldid;
+ let nytt = req.params.newid;
   
-  if(!req.body) { return res.send(400); }
-  
-  collection.update({id:oldid}, {$set: {id:newid}},
+  collection.update({id: gammalt }, {$set: {id: nytt}},
      function (err, result) {
     res.send(
       (err === null) ? {
@@ -150,5 +169,21 @@ router.put('/updateanimal4', function(req, res) {
         });
     });
 });
+
+router.put('/updateanimal5', function(req, res) {
+  var db = req.db;
+  var collection = db.get('animals');
+  var myquery = { id: "9" };
+  var newvalues = { $set: {id: "10" } };
+
+
+  if(!req.body) { return res.send(400); }
+
+  collection("animals").updateOne(myquery, newvalues, function(e, data) {
+      if(e) { return res.send(500, e); }
+      if(!data) { return res.send(404); }
+        res.json(data);
+      });
+  });
 
 module.exports = router;

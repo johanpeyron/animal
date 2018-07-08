@@ -59,7 +59,7 @@ function populateTable() {
 function resetDB() {
     $.ajax({
         type: 'DELETE',
-        url: '/animalsroute/deleteanimal'
+        url: '/animalsroute/resetdb'
     }).done(function (response) {
 
         // Check for a successful (blank) response
@@ -306,56 +306,79 @@ function copyPrevious () {
 
 function dBugPUT () {
     let l_obj = {};
+    let l_params = {idold: "88", idnew: "8"};
     let oldid = $('#id').val();
 
-
-    // PUT didn´t work, try DELETE + POST
     l_obj = loopIds(oldid);
     if (l_obj.answer == 'Yes') {
-        l_obj.oldid = oldid;
-        l_obj.id = oldid + 1;
-        updateId(l_obj);
+        //l_obj.oldid = oldid;
+        //l_obj.id = Number(oldid) + 1;
+        updateId3(l_params);
     }
 }
 
+// PUT
+function updateId3(updAnimal) {
+    console.log(updAnimal);
+        $.ajax({
+        type: 'PUT',
+        //data: updAnimal,
+        data: updAnimal,
+        url: '/animalsroute/updateanimal3/12/8',
+        dataType: 'JSON'
+        }).done(function( response ) {
+            // Check for successful (blank) response
+            if (response.msg === '') {
+    
+                // Update the table
+                populateTable();
+            }
+            else {
+                // If something goes wrong, alert the error message that our service returned
+                alert('Error: ' + response.msg);
+                }
+        });
+}
+
+// Update Animal Id using fetch()
+// https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+function updateId2(updAnimal) {
+
+    var url = "mongodb://localhost:27017";
+    var data = updAnimal;
+    
+    fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      mode: "same-origin",
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => console.log('Success:', response));
+}
 
 // Update Animal Id
 function updateId(updAnimal) {
-console.log(updAnimal);
-    // Use AJAX to PUT and update the animal-id
-    $.ajax({
-    type: 'PUT',
-    //data: updAnimal,
-    data: updAnimal,
-    url: '/animalsroute/updateanimal4',
-    dataType: 'JSON'
-    }).done(function( response ) {
-        // Check for successful (blank) response
-        if (response.msg === '') {
-
-            // Update the table
-            populateTable();
-        }
-        else {
-            // If something goes wrong, alert the error message that our service returned
-            alert('Error: ' + response.msg);
+    console.log(updAnimal);
+        // Use AJAX to PUT and update the animal-id
+        $.ajax({
+        type: 'PUT',
+        //data: updAnimal,
+        data: updAnimal,
+        url: '/animalsroute/updateanimal4',
+        dataType: 'JSON'
+        }).done(function( response ) {
+            // Check for successful (blank) response
+            if (response.msg === '') {
+    
+                // Update the table
+                populateTable();
             }
-    });
-}
-
-
-function resetDB() {
-    $.ajax({
-        type: 'DELETE',
-        url: '/animalsroute/deleteanimal'
-    }).done(function (response) {
-
-        // Check for a successful (blank) response
-        if (response.msg === '') {} else {
-          alert('Error: ' + response.msg);
-        }
-
-        // Go get fresh data
-        populateTable();
-    });
+            else {
+                // If something goes wrong, alert the error message that our service returned
+                alert('Error: ' + response.msg);
+                }
+        });
 }
