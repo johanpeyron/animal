@@ -124,30 +124,13 @@ function playGame(button) {
     // Remember previous question
     copyPrevious();
 
-    if ('Yes' == answerMatches) {
-        // Move one question-node down the binary tree
-        l_id = 2 *l_id;
-        l_obj = loopIds(l_id);
-        if (l_obj.id != "") {
-            askQuestion(l_obj);
-        } else {
-            l_obj = loopIds(l_id + 1);
-            if (l_obj.id != "") {
-                askQuestion(l_obj);
-            } else {
-                teachMeMoreAnimals();
-            }
-        }
+    l_id = ('Yes' == answerMatches) ? 2 * l_id : (2 * l_id) + 1;
+    l_obj = loopIds(l_id);
+    if (l_obj.id != "") {
+        askQuestion(l_obj);
     } else {
-          // Stay on the node and examine the other leaf  
-          l_id = ('Yes' == $('#answer').val()) ? l_id + 1 : l_id - 1; 
-          l_obj = loopIds(l_id);
-          if (l_obj.id != "") {
-              askQuestion(l_obj);
-          } else {
-              teachMeMoreAnimals();
-          }
-        }
+        teachMeMoreAnimals();
+    }
 }
 
 function formAddAnimalResponse(button) {
@@ -194,24 +177,8 @@ function addAnAnimal() {
         return;
     }
 
-    if ('Yes' == prevAnswMatchPrevQuest || oldid % 2 == 1) {
-        // Add a node
-        newId = ('Yes' == correctAnsNewQuest) ? 2 * oldid : (2 * oldid) + 1;
-    } else {
-        // Add a leaf
-        if ('No' == correctAnsNewQuest) {
-            // Is there a 'Yes'-leaf? Update it to 'No'
-            l_obj = loopIds(oldid);
-            if (l_obj.answer == 'Yes') {
-                myParams.oldid = oldid;
-                newId = oldid + 1;
-                myParams.newid = newId;
-                updateId(myParams);
-            }
-        }
-        
-        newId = ('Yes' == correctAnsNewQuest) ? oldid + 1 : oldid - 1;
-    }
+    // Add a node
+    newId = ('Yes' == $('#answerMatchesQuestion').val()) ? 2 * oldid : (2 * oldid) + 1;
 
     // Is this id already taken in the db?
     l_obj = loopIds(newId);
