@@ -33,6 +33,9 @@ $("#btnUpdateId").click(function () {
 
 // Fill table with data
 function populateTable() {
+    // Reset input in formAddAnimal
+    clearFormAddAnimal();
+    //location.reload(true);
     // jQuery AJAX call to get the animals
     $.getJSON( '/animalsroute/animals', function( animaldata ) {
         var databasTxt = '';
@@ -45,14 +48,19 @@ function populateTable() {
         gAdata = animaldata;
         
         if (gAdata[0] !== undefined) {
-          //gId = gAdata[0].id;
-          //$('#index').val(gAdata[0].id);
-          $('#id').val(gAdata[0].id);
-          $('#answer').val(gAdata[0].answer);
-          // Infotext from the db
+            //gId = gAdata[0].id;
+            //$('#index').val(gAdata[0].id);
+            $('#id').val(gAdata[0].id);
+            $('#answer').val(gAdata[0].answer);
+            // Infotext from the db
             $('#formEttFraga').text(gAdata[0].question);
         }
     });
+}
+
+function clearFormAddAnimal () {
+    $('#formAddAnimalAnimal').val();
+    $('#formAddAnimalQuestion').val();
 }
 
 // Reset db to initial state
@@ -169,8 +177,9 @@ function formAddAnimalResponse(button) {
 // Add Animal
 function addAnAnimal() {
     let l_obj = {};
+    let myParams = {};
     let newAnimal = {};
-    let animalDate = "2018-01-22T14:56:59.301Z";
+    //let animalDate = "2018-01-22T14:56:59.301Z";
     
     var newId = 0;
     var oldid = Number($('#id').val());
@@ -185,7 +194,7 @@ function addAnAnimal() {
         return;
     }
 
-    if ('Yes' == prevAnswMatchPrevQuest) {
+    if ('Yes' == prevAnswMatchPrevQuest || oldid % 2 == 1) {
         // Add a node
         newId = ('Yes' == correctAnsNewQuest) ? 2 * oldid : (2 * oldid) + 1;
     } else {
@@ -194,8 +203,10 @@ function addAnAnimal() {
             // Is there a 'Yes'-leaf? Update it to 'No'
             l_obj = loopIds(oldid);
             if (l_obj.answer == 'Yes') {
-                l_obj.id = oldid + 1;
-                updateId(l_obj);
+                myParams.oldid = oldid;
+                newId = oldid + 1;
+                myParams.newid = newId;
+                updateId(myParams);
             }
         }
         
@@ -261,7 +272,7 @@ $( "formAddAnimal" ).submit(function( event ) {
   event.preventDefault();
 });
 
-// get MongoDB-document based on gAdata[].id
+// get MongoDB-document based on id
 function loopIds (val) {
     let l_obj = {};
     
@@ -305,80 +316,34 @@ function copyPrevious () {
 }
 
 function dBugPUT () {
-    let l_obj = {};
-    let l_params = {idold: "88", idnew: "8"};
-    let oldid = $('#id').val();
+    let myObj = {};
+    let myParams = {};
 
-    l_obj = loopIds(oldid);
-    if (l_obj.answer == 'Yes') {
-        //l_obj.oldid = oldid;
-        //l_obj.id = Number(oldid) + 1;
-        updateId3(l_params);
+    myObj = loopIds($('#id').val());
+    if (myObj.answer == 'Yes') {
+        myParams.oldid = myObj.id;
+        myParams.newid = Number(myObj.id) + 1;
+        
+        updateId(myParams);
     }
 }
 
 // PUT
-function updateId3(updAnimal) {
-    console.log(updAnimal);
+function updateId(animalid) {
+    let myUrl = '/animalsroute/updateanimal/' + animalid.oldid +
+                '/' + animalid.newid;
         $.ajax({
         type: 'PUT',
-        //data: updAnimal,
-        data: updAnimal,
-        url: '/animalsroute/updateanimal3/12/8',
+        data: animalid,
+        url: myUrl,
         dataType: 'JSON'
         }).done(function( response ) {
             // Check for successful (blank) response
             if (response.msg === '') {
-    
-                // Update the table
                 populateTable();
             }
             else {
-                // If something goes wrong, alert the error message that our service returned
                 alert('Error: ' + response.msg);
-                }
-        });
-}
-
-// Update Animal Id using fetch()
-// https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-function updateId2(updAnimal) {
-
-    var url = "mongodb://localhost:27017";
-    var data = updAnimal;
-    
-    fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(data), // data can be `string` or {object}!
-      mode: "same-origin",
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success:', response));
-}
-
-// Update Animal Id
-function updateId(updAnimal) {
-    console.log(updAnimal);
-        // Use AJAX to PUT and update the animal-id
-        $.ajax({
-        type: 'PUT',
-        //data: updAnimal,
-        data: updAnimal,
-        url: '/animalsroute/updateanimal4',
-        dataType: 'JSON'
-        }).done(function( response ) {
-            // Check for successful (blank) response
-            if (response.msg === '') {
-    
-                // Update the table
-                populateTable();
             }
-            else {
-                // If something goes wrong, alert the error message that our service returned
-                alert('Error: ' + response.msg);
-                }
         });
 }
