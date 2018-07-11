@@ -33,9 +33,8 @@ $("#btnUpdateId").click(function () {
 
 // Fill table with data
 function populateTable() {
-    // Reset input in formAddAnimal
-    clearFormAddAnimal();
-    //location.reload(true);
+    // Reset formDbug + formAddAnimal
+    resetForms();
     // jQuery AJAX call to get the animals
     $.getJSON( '/animalsroute/animals', function( animaldata ) {
         var databasTxt = '';
@@ -51,16 +50,17 @@ function populateTable() {
             //gId = gAdata[0].id;
             //$('#index').val(gAdata[0].id);
             $('#id').val(gAdata[0].id);
-            $('#answer').val(gAdata[0].answer);
+            //$('#answer').val(gAdata[0].answer);
             // Infotext from the db
             $('#formEttFraga').text(gAdata[0].question);
         }
     });
+    document.getElementById("btnFormEttYes").focus();
 }
 
-function clearFormAddAnimal () {
-    $('#formAddAnimalAnimal').val();
-    $('#formAddAnimalQuestion').val();
+function resetForms() {
+    document.getElementById("formDbug").reset();
+    document.getElementById("formAddAnimal").reset();
 }
 
 // Reset db to initial state
@@ -120,7 +120,7 @@ function playGame(button) {
         $('#answerMatchesQuestion').val('No');
     }
     answerMatches = $('#answerMatchesQuestion').val();
-
+    
     // Remember previous question
     copyPrevious();
 
@@ -145,6 +145,7 @@ function formAddAnimalResponse(button) {
         l_id = 5;
     } else {
         isCorrect = false;
+        //l_id = 4;
         l_id = 6;
     }
     
@@ -184,7 +185,7 @@ function addAnAnimal() {
     l_obj = loopIds(newId);
     if (l_obj.animal !== '') {
         // This id is taken, error out
-        alert('Something went wrong when adding this animal');
+        alert('Something is wrong. Can´t add this animal');
         return;
     }
 
@@ -225,7 +226,8 @@ function teachMeMoreAnimals(){
   // Hide formEtt
   //$(formEtt).hide();
 
-  id = $('#answerMatchesQuestion').val() ? 6 : 4;
+  //id = $('#answerMatchesQuestion').val() ? 6 : 4;
+  id = ($('#answerMatchesQuestion').val() == 'Yes') ? 4 : 6;
   l_obj = loopIds(id);
   //question = l_obj.question;
   txt = l_obj.question + " " + $('#animal').val() + ' ?';
