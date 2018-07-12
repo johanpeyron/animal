@@ -84,7 +84,7 @@ function playGame(button) {
     l_obj = {};
     l_id = 0;
     txt = "";
-    answerMatches = "";
+    //answerMatches = "";
 
     // Remember what putton the player pressed
     $('#playerSays').val(button);
@@ -117,18 +117,19 @@ function playGame(button) {
     l_id = Number($('#id').val());
     
     // Do question and answer match?
-    if ($('#answer').val() == button) {
+/*     if ($('#answer').val() == button) {
         $('#answerMatchesQuestion').val('Yes');
     } else {
         $('#answerMatchesQuestion').val('No');
     }
-    answerMatches = $('#answerMatchesQuestion').val();
+    answerMatches = $('#answerMatchesQuestion').val(); */
     
     // Remember previous question
     copyPrevious();
 
     //l_id = ('Yes' == answerMatches) ? 2 * l_id : (2 * l_id) + 1;
-    l_id = ('Yes' == $('#playerSays').val()) ? 2 * l_id : (2 * l_id) + 1;
+    //l_id = ('Yes' == $('#playerSays').val()) ? 2 * l_id : (2 * l_id) + 1;
+    l_id = playerAnswers(l_id);
 
     l_obj = loopIds(l_id);
     if (l_obj.id != "") {
@@ -138,22 +139,30 @@ function playGame(button) {
     }
 }
 
+function playerAnswers(nr) {
+    let idNr = 0;
+    idNr = ('Yes' == $('#playerSays').val()) ? 2 * nr : (2 * nr) + 1;
+    return idNr;
+}
+
 function formAddAnimalResponse(button) {
     let l_obj = {};
     let l_id = 0;
     let txt = "";
-    let isCorrect = false;
+    //let isCorrect = false;
     
     // Correct guess!
-    if (button == "Yes") {
-        isCorrect = true;
+/*     if (button == "Yes") {
+      //  isCorrect = true;
         l_id = 5;
     } else {
-        isCorrect = false;
+        //isCorrect = false;
         //l_id = 4;
         l_id = 6;
-    }
+    } */
     
+    l_id = (button == "Yes") ? 5 : 6;
+
     l_obj = loopIds(l_id);
     txt = l_obj.question;
     if (6 == l_id) {
@@ -179,14 +188,15 @@ function addAnAnimal() {
     var prevAnswer = $('#prevanswer').val();
 
     if ((animal === '') || (question === '')) {
-        alert('Something is missing');
+        alert('Please fill out animal and question');
         return;
     }
 
     // Add a node
     //newId = ('Yes' == $('#answerMatchesQuestion').val()) ? 2 * oldid : (2 * oldid) + 1;
     //newId = ('Yes' == $('#answer').val()) ? 2 * oldid : (2 * oldid) + 1;
-    newId = ('Yes' == playerResponse) ? 2 * oldid : (2 * oldid) + 1;
+    //newId = ('Yes' == playerResponse) ? 2 * oldid : (2 * oldid) + 1;
+    newId = playerAnswers(oldid);
 
     // Is this id already taken in the db?
     l_obj = loopIds(newId);
@@ -223,23 +233,24 @@ function addAnAnimal() {
 
 function teachMeMoreAnimals(){
   let l_obj = {};
-  let addMe = {};
-  let id = 0;
-  let lastcorrect = 0;
+  //let addMe = {};
+  //let id = 0;
+  //let lastcorrect = 0;
   let txt = "";
   //let question = "";
-  let animal = "";
+  //let animal = "";
   
   // Hide formEtt
   //$(formEtt).hide();
 
   //id = $('#answerMatchesQuestion').val() ? 6 : 4;
-  id = ($('#answerMatchesQuestion').val() == 'Yes') ? 4 : 6;
-  l_obj = loopIds(id);
+  //id = ($('#playerSays').val() == 'Yes') ? 4 : 6;
+  l_obj = loopIds(4);
   //question = l_obj.question;
   txt = l_obj.question + " " + $('#animal').val() + ' ?';
   $('#formAddAnimalFraga').text(txt);
-  if (6 == id) { document.getElementById("formAddAnimalAnimal").focus(); }
+  document.getElementById("addAnimalYes").focus();
+  //if (6 == id) { document.getElementById("formAddAnimalAnimal").focus(); }
   //$('#addQuestionId').val(l_obj.id);
 }
 
@@ -292,7 +303,7 @@ function copyPrevious () {
     $('#prevanswerMatchesQuestion').val($('#answerMatchesQuestion').val());
 }
 
-function dBugPUT () {
+/* function dBugPUT () {
     let myObj = {};
     let myParams = {};
 
@@ -303,7 +314,7 @@ function dBugPUT () {
         
         updateId(myParams);
     }
-}
+} */
 
 // PUT
 function updateId(animalid) {
