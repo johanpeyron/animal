@@ -254,7 +254,6 @@ function teachMeMoreAnimals(){
   //$('#addQuestionId').val(l_obj.id);
 }
 
-
 // Prevent form submission
 $( "formAddAnimal" ).submit(function( event ) {
   event.preventDefault();
