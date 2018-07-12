@@ -86,6 +86,9 @@ function playGame(button) {
     txt = "";
     answerMatches = "";
 
+    // Remember what putton the player pressed
+    $('#playerSays').val(button);
+
     // Display infotext and the first question
     // Documents in MongoDB with id < 8 carry infotext and questions
     // The document with id = 8 has the first question
@@ -124,7 +127,9 @@ function playGame(button) {
     // Remember previous question
     copyPrevious();
 
-    l_id = ('Yes' == answerMatches) ? 2 * l_id : (2 * l_id) + 1;
+    //l_id = ('Yes' == answerMatches) ? 2 * l_id : (2 * l_id) + 1;
+    l_id = ('Yes' == $('#playerSays').val()) ? 2 * l_id : (2 * l_id) + 1;
+
     l_obj = loopIds(l_id);
     if (l_obj.id != "") {
         askQuestion(l_obj);
@@ -153,6 +158,7 @@ function formAddAnimalResponse(button) {
     txt = l_obj.question;
     if (6 == l_id) {
        txt += " "+ $('#animal').val() ;
+       document.getElementById("formAddAnimalAnimal").focus();
     }
     
     $('#formAddAnimalFraga').text(txt);
@@ -163,13 +169,12 @@ function addAnAnimal() {
     let l_obj = {};
     let myParams = {};
     let newAnimal = {};
-    //let animalDate = "2018-01-22T14:56:59.301Z";
     
     var newId = 0;
     var oldid = Number($('#id').val());
     var animal = $('#formAddAnimalAnimal').val();
     var question = $('#formAddAnimalQuestion').val();
-    var correctAnsNewQuest = $("input[name='formAddAnimalCorrectAnswer']:checked").val();
+    var playerResponse = $("input[name='formAddAnimalAnswer']:checked").val();
     var prevAnswMatchPrevQuest = $('#prevanswerMatchesQuestion').val();
     var prevAnswer = $('#prevanswer').val();
 
@@ -179,7 +184,9 @@ function addAnAnimal() {
     }
 
     // Add a node
-    newId = ('Yes' == $('#answerMatchesQuestion').val()) ? 2 * oldid : (2 * oldid) + 1;
+    //newId = ('Yes' == $('#answerMatchesQuestion').val()) ? 2 * oldid : (2 * oldid) + 1;
+    //newId = ('Yes' == $('#answer').val()) ? 2 * oldid : (2 * oldid) + 1;
+    newId = ('Yes' == playerResponse) ? 2 * oldid : (2 * oldid) + 1;
 
     // Is this id already taken in the db?
     l_obj = loopIds(newId);
@@ -193,7 +200,7 @@ function addAnAnimal() {
     newAnimal.id = newId;
     newAnimal.animal = animal;
     newAnimal.question = question;
-    newAnimal.answer = correctAnsNewQuest;
+    newAnimal.answer = playerResponse;
     newAnimal.keep = "0";
 
     // Use AJAX to post to the db
@@ -206,10 +213,10 @@ function addAnAnimal() {
         // Check for successful (blank) response
         if (response.msg === '') {
             location.reload(true);
-            return;
-        } else {
             // If something goes wrong, alert the error message that our service returned
+            console.log("err.msg = " + msg);
             alert('Error: ' + response.msg);
+            console.log("after alert Error");
         }
     });
 }
@@ -232,6 +239,7 @@ function teachMeMoreAnimals(){
   //question = l_obj.question;
   txt = l_obj.question + " " + $('#animal').val() + ' ?';
   $('#formAddAnimalFraga').text(txt);
+  if (6 == id) { document.getElementById("formAddAnimalAnimal").focus(); }
   //$('#addQuestionId').val(l_obj.id);
 }
 

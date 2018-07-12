@@ -12,15 +12,14 @@ router.get('/animals', (req, res) => {
 
 /* POST to animalsroute */
 router.post('/addanimal', function (req, res) {
+  console.log("Inside animalsroute POST");
   var db = req.db;
   var collection = db.get('animals');
+  console.log("about to ask for req.body");
+  console.log(req.body);
   collection.insert(req.body, function (err, result) {
     res.send(
-      (err === null) ? {
-        msg: ''
-      } : {
-        msg: err
-      }
+      (err === null) ? { msg: '' } : { msg: err }
     );
   });
 });
