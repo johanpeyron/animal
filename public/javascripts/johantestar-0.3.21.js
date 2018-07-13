@@ -89,17 +89,21 @@ function playGame(button) {
     // Remember what putton the player pressed
     $('#playerSays').val(button);
 
+    // Display infotext and the first question
     // Documents in MongoDB with id < 8 carry infotext and questions
+    // The document with id = 8 has the first question
     if (Number($('#id').val()) < 2) {
         l_id = Number($('#id').val()) + 1;
         $('#id').val(l_id);
 
         if (button == 'No') {
+          // Player is not in a playful mood today, reload page
           location.reload(true);
           return;
         }
 
         if ($('#id').val() == "2") {
+          // Display first question
           l_id = 8;
           $('#id').val(l_id);
         }
@@ -112,9 +116,19 @@ function playGame(button) {
     // Respond to a question
     l_id = Number($('#id').val());
     
+    // Do question and answer match?
+/*     if ($('#answer').val() == button) {
+        $('#answerMatchesQuestion').val('Yes');
+    } else {
+        $('#answerMatchesQuestion').val('No');
+    }
+    answerMatches = $('#answerMatchesQuestion').val(); */
+    
     // Remember previous question
     copyPrevious();
 
+    //l_id = ('Yes' == answerMatches) ? 2 * l_id : (2 * l_id) + 1;
+    //l_id = ('Yes' == $('#playerSays').val()) ? 2 * l_id : (2 * l_id) + 1;
     l_id = playerAnswers(l_id);
 
     l_obj = loopIds(l_id);
@@ -135,7 +149,18 @@ function formAddAnimalResponse(button) {
     let l_obj = {};
     let l_id = 0;
     let txt = "";
-
+    //let isCorrect = false;
+    
+    // Correct guess!
+/*     if (button == "Yes") {
+      //  isCorrect = true;
+        l_id = 5;
+    } else {
+        //isCorrect = false;
+        //l_id = 4;
+        l_id = 6;
+    } */
+    
     l_id = (button == "Yes") ? 5 : 6;
 
     l_obj = loopIds(l_id);

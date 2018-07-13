@@ -15,8 +15,6 @@ router.post('/addanimal', function (req, res) {
   console.log("Inside animalsroute POST");
   var db = req.db;
   var collection = db.get('animals');
-  console.log("about to ask for req.body");
-  console.log(req.body);
   collection.insert(req.body, function (err, result) {
     res.send(
       (err === null) ? { msg: '' } : { msg: err }
@@ -42,11 +40,10 @@ router.delete('/resetdb', function (req, res) {
 
 /* DELETE one document */
 router.delete('/deleteanimal', function (req, res) {
-  console.log('arrived at deleteanimal');
   var db = req.db;
   var collection = db.get('animals');
   var docToDelete = req.data.id;
-  console.log('docToDelete = ' + docToDelete);
+  //console.log('docToDelete = ' + docToDelete);
 
   collection.remove({
     'id': docToDelete

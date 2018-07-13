@@ -89,17 +89,21 @@ function playGame(button) {
     // Remember what putton the player pressed
     $('#playerSays').val(button);
 
+    // Display infotext and the first question
     // Documents in MongoDB with id < 8 carry infotext and questions
+    // The document with id = 8 has the first question
     if (Number($('#id').val()) < 2) {
         l_id = Number($('#id').val()) + 1;
         $('#id').val(l_id);
 
         if (button == 'No') {
+          // Player is not in a playful mood today, reload page
           location.reload(true);
           return;
         }
 
         if ($('#id').val() == "2") {
+          // Display first question
           l_id = 8;
           $('#id').val(l_id);
         }
@@ -112,9 +116,19 @@ function playGame(button) {
     // Respond to a question
     l_id = Number($('#id').val());
     
+    // Do question and answer match?
+/*     if ($('#answer').val() == button) {
+        $('#answerMatchesQuestion').val('Yes');
+    } else {
+        $('#answerMatchesQuestion').val('No');
+    }
+    answerMatches = $('#answerMatchesQuestion').val(); */
+    
     // Remember previous question
-    copyPrevious();
+    //copyPrevious();
 
+    //l_id = ('Yes' == answerMatches) ? 2 * l_id : (2 * l_id) + 1;
+    //l_id = ('Yes' == $('#playerSays').val()) ? 2 * l_id : (2 * l_id) + 1;
     l_id = playerAnswers(l_id);
 
     l_obj = loopIds(l_id);
@@ -135,7 +149,18 @@ function formAddAnimalResponse(button) {
     let l_obj = {};
     let l_id = 0;
     let txt = "";
-
+    //let isCorrect = false;
+    
+    // Correct guess!
+/*     if (button == "Yes") {
+      //  isCorrect = true;
+        l_id = 5;
+    } else {
+        //isCorrect = false;
+        //l_id = 4;
+        l_id = 6;
+    } */
+    
     l_id = (button == "Yes") ? 5 : 6;
 
     l_obj = loopIds(l_id);
@@ -185,7 +210,7 @@ function addAnAnimal() {
     newAnimal.id = newId;
     newAnimal.animal = animal;
     newAnimal.question = question;
-    newAnimal.answer = playerResponse;
+    //newAnimal.answer = playerResponse;
     newAnimal.keep = "0";
 
     // Use AJAX to post to the db
@@ -197,11 +222,12 @@ function addAnAnimal() {
     }).done(function (response) {
         // Check for successful (blank) response
         if (response.msg === '') {
-            location.reload(true);
+            //location.reload(true);
             // If something goes wrong, alert the error message that our service returned
-            console.log("err.msg = " + msg);
+            console.log("response = " + response);
+            //console.log("err.msg = " + msg);
             alert('Error: ' + response.msg);
-            console.log("after alert Error");
+            //console.log("after alert Error");
         }
     });
 }
@@ -243,7 +269,7 @@ function loopIds (val) {
             l_obj.id = gAdata[i].id;
             //l_obj.index = i;
             l_obj.animal = gAdata[i].animal;
-            l_obj.answer = gAdata[i].answer;
+            //l_obj.answer = gAdata[i].answer;
             l_obj.question = gAdata[i].question;
 
             return l_obj;
@@ -253,7 +279,7 @@ function loopIds (val) {
     l_obj.id = 0;
     //l_obj.index = "";
     l_obj.animal = "";
-    l_obj.answer = "";
+    //l_obj.answer = "";
     l_obj.question = "";
     
     return l_obj;
@@ -263,19 +289,19 @@ function askQuestion (obj) {
     //$('#index').val(obj.index);
     $('#id').val(obj.id);
     $('#animal').val(obj.animal);
-    $('#answer').val(obj.answer);
+    //$('#answer').val(obj.answer);
     $('#question').val(obj.question);
     $('#formEttFraga').text(obj.question);
 }
 
-function copyPrevious () {
+/* function copyPrevious () {
     //$('#previndex').val($('#index').val());
-    $('#previd').val($('#id').val());
+    //$('#previd').val($('#id').val());
     $('#prevquestion').val($('#question').val());
     $('#prevanimal').val($('#animal').val());
-    $('#prevanswer').val($('#answer').val());
+    //$('#prevanswer').val($('#answer').val());
     $('#prevanswerMatchesQuestion').val($('#answerMatchesQuestion').val());
-}
+} */
 
 /* function dBugPUT () {
     let myObj = {};
