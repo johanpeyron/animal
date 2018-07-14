@@ -16,7 +16,6 @@ $("#btnToggleFormEtt").click(function () {
 });
 
 $("#btnToggleFormAddAnimal").click(function () {
-  //$('#areaDbug').append('test');
   $('#areaDbug').text('');
   $(formAddAnimal).toggle();
 });
@@ -47,10 +46,7 @@ function populateTable() {
         gAdata = animaldata;
         
         if (gAdata[0] !== undefined) {
-            //gId = gAdata[0].id;
-            //$('#index').val(gAdata[0].id);
             $('#id').val(gAdata[0].id);
-            //$('#answer').val(gAdata[0].answer);
             // Infotext from the db
             $('#formEttFraga').text(gAdata[0].question);
         }
@@ -113,9 +109,13 @@ function playGame(button) {
     l_id = Number($('#id').val());
     
     // Remember previous question
-    copyPrevious();
+    //copyPrevious();
 
+    // 0.3.23
     l_id = playerAnswers(l_id);
+
+    // 0.3.24
+    //l_id = idOnAnswer(l_id);
 
     l_obj = loopIds(l_id);
     if (l_obj.id != "") {
@@ -125,9 +125,17 @@ function playGame(button) {
     }
 }
 
+// used in 0.3.23 to calculate id
 function playerAnswers(nr) {
     let idNr = 0;
     idNr = ('Yes' == $('#playerSays').val()) ? 2 * nr : (2 * nr) + 1;
+    return idNr;
+}
+
+// 0.3.24 calculate id based on answer
+function idOnAnswer(nr) {
+    let idNr = 0;
+    idNr = ('Yes' == $('#answer').val()) ? 2 * nr : (2 * nr) + 1;
     return idNr;
 }
 
@@ -135,6 +143,9 @@ function formAddAnimalResponse(button) {
     let l_obj = {};
     let l_id = 0;
     let txt = "";
+
+    $('#formAddAnimalAnimal').removeAttr('readonly');
+    $('#formAddAnimalQuestion').removeAttr('readonly');
 
     l_id = (button == "Yes") ? 5 : 6;
 
@@ -159,12 +170,13 @@ function addAnAnimal() {
     var animal = $('#formAddAnimalAnimal').val();
     var question = $('#formAddAnimalQuestion').val();
     var playerResponse = $("input[name='formAddAnimalAnswer']:checked").val();
-
+    
     if ((animal === '') || (question === '')) {
         alert('Please fill out animal and question');
         return;
     }
 
+    // 0.3.23
     newId = playerAnswers(oldid);
 
     // Is this id already taken in the db?
@@ -211,11 +223,6 @@ function teachMeMoreAnimals(){
   $('#formAddAnimalFraga').text(txt);
   document.getElementById("addAnimalYes").focus();
 }
-
-// Prevent form submission
-/* $( "formAddAnimal" ).submit(function( event ) {
-  event.preventDefault();
-});  */
 
 // get MongoDB-document based on id
 function loopIds (val) {
