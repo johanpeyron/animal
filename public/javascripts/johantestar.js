@@ -159,18 +159,12 @@ function addAnAnimal() {
     var animal = $('#formAddAnimalAnimal').val();
     var question = $('#formAddAnimalQuestion').val();
     var playerResponse = $("input[name='formAddAnimalAnswer']:checked").val();
-    var prevAnswMatchPrevQuest = $('#prevanswerMatchesQuestion').val();
-    var prevAnswer = $('#prevanswer').val();
 
     if ((animal === '') || (question === '')) {
         alert('Please fill out animal and question');
         return;
     }
 
-    // Add a node
-    //newId = ('Yes' == $('#answerMatchesQuestion').val()) ? 2 * oldid : (2 * oldid) + 1;
-    //newId = ('Yes' == $('#answer').val()) ? 2 * oldid : (2 * oldid) + 1;
-    //newId = ('Yes' == playerResponse) ? 2 * oldid : (2 * oldid) + 1;
     newId = playerAnswers(oldid);
 
     // Is this id already taken in the db?
@@ -188,7 +182,6 @@ function addAnAnimal() {
     newAnimal.answer = playerResponse;
     newAnimal.keep = "0";
 
-    // Use AJAX to post to the db
     $.ajax({
         type: 'POST',
         data: newAnimal,
@@ -208,31 +201,21 @@ function addAnAnimal() {
 
 function teachMeMoreAnimals(){
   let l_obj = {};
-  //let addMe = {};
-  //let id = 0;
-  //let lastcorrect = 0;
   let txt = "";
-  //let question = "";
-  //let animal = "";
   
   // Hide formEtt
   //$(formEtt).hide();
 
-  //id = $('#answerMatchesQuestion').val() ? 6 : 4;
-  //id = ($('#playerSays').val() == 'Yes') ? 4 : 6;
   l_obj = loopIds(4);
-  //question = l_obj.question;
   txt = l_obj.question + " " + $('#animal').val() + ' ?';
   $('#formAddAnimalFraga').text(txt);
   document.getElementById("addAnimalYes").focus();
-  //if (6 == id) { document.getElementById("formAddAnimalAnimal").focus(); }
-  //$('#addQuestionId').val(l_obj.id);
 }
 
 // Prevent form submission
-$( "formAddAnimal" ).submit(function( event ) {
+/* $( "formAddAnimal" ).submit(function( event ) {
   event.preventDefault();
-});
+});  */
 
 // get MongoDB-document based on id
 function loopIds (val) {
