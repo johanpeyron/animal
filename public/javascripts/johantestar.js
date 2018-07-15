@@ -16,12 +16,12 @@ $("#btnToggleFormEtt").click(function () {
 });
 
 $("#btnToggleFormAddAnimal").click(function () {
-  $('#areaDbug').text('');
-  $(formAddAnimal).toggle();
+  //$(formAddAnimal).toggle();
+  $("#btnformAddAnimal").prop('disabled', true);
 });
 
 $("#btnToggleDbTxt").click(function () {
-    $('#areaDbug').text('');
+    $('#dbTxt').toggle();
     $(hideMe2).toggle();
   });
   
