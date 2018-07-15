@@ -20,6 +20,11 @@ $("#btnToggleFormAddAnimal").click(function () {
   $(formAddAnimal).toggle();
 });
 
+$("#btnToggleDbTxt").click(function () {
+    $('#areaDbug').text('');
+    $(dbTxt).toggle();
+  });
+  
 $("#btnResetDB").click(function () {
   resetDB();
 });
@@ -33,7 +38,7 @@ $("#btnUpdateId").click(function () {
 // Fill table with data
 function populateTable() {
     // Reset formDbug + formAddAnimal
-    resetForms();
+    //resetForms();
     // jQuery AJAX call to get the animals
     $.getJSON( '/animalsroute/animals', function( animaldata ) {
         var databasTxt = '';
@@ -48,16 +53,17 @@ function populateTable() {
         if (gAdata[0] !== undefined) {
             $('#id').val(gAdata[0].id);
             // Infotext from the db
-            $('#formEttFraga').text(gAdata[0].question);
+            //$('#formEttFraga').text(gAdata[0].question);
+            $('#formEttFraga').val(gAdata[0].question);
         }
     });
     document.getElementById("btnFormEttYes").focus();
 }
 
-function resetForms() {
+/* function resetForms() {
     document.getElementById("formDbug").reset();
     document.getElementById("formAddAnimal").reset();
-}
+} */
 
 // Reset db to initial state
 function resetDB() {
@@ -156,7 +162,8 @@ function formAddAnimalResponse(button) {
        document.getElementById("formAddAnimalAnimal").focus();
     }
     
-    $('#formAddAnimalFraga').text(txt);
+    //$('#formAddAnimalFraga').text(txt);
+    $('#formAddAnimalFraga').val(txt);
 }
 
 // Add Animal
@@ -220,7 +227,8 @@ function teachMeMoreAnimals(){
 
   l_obj = loopIds(4);
   txt = l_obj.question + " " + $('#animal').val() + ' ?';
-  $('#formAddAnimalFraga').text(txt);
+  //$('#formAddAnimalFraga').text(txt);
+  $('#formAddAnimalFraga').val(txt);
   document.getElementById("addAnimalYes").focus();
 }
 
@@ -255,7 +263,8 @@ function askQuestion (obj) {
     $('#animal').val(obj.animal);
     $('#answer').val(obj.answer);
     $('#question').val(obj.question);
-    $('#formEttFraga').text(obj.question);
+    //$('#formEttFraga').text(obj.question);
+    $('#formEttFraga').val(obj.question);
 }
 
 function copyPrevious () {
