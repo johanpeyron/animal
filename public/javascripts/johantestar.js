@@ -22,7 +22,7 @@ $("#btnToggleFormAddAnimal").click(function () {
 
 $("#btnToggleDbTxt").click(function () {
     $('#areaDbug').text('');
-    $(dbTxt).toggle();
+    $(hideMe2).toggle();
   });
   
 $("#btnResetDB").click(function () {
