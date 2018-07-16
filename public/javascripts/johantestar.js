@@ -3,10 +3,12 @@
 let gAdata = [];
 
 // DOM Ready ==================================================================
+
 $(document).ready(function() {
   
   // Populate the user table on initial page load
   populateTable();
+  //$("#formAddAnimal").hide();
 });
 
 // ====================   Helper functions    =================================
@@ -17,26 +19,28 @@ $("#btnToggleFormEtt").click(function () {
 
 $("#btnToggleFormAddAnimal").click(function () {
   //$(formAddAnimal).toggle();
-  $("#btnformAddAnimal").prop('disabled', true);
+  $("#formAddAnimal").show();
 });
 
 $("#btnToggleDbTxt").click(function () {
     $('#dbTxt').toggle();
     $(hideMe2).toggle();
-  });
-  
+});
+
 $("#btnResetDB").click(function () {
-  resetDB();
+    resetDB();
 });
 
 $("#btnUpdateId").click(function () {
     dBugPUT();
-  });
-  // ====================   Functions   =========================================
+});
+// ====================   Functions   =========================================
 
 
 // Fill table with data
 function populateTable() {
+    // Prevent user from adding animals
+    $("#btnformAddAnimal").prop('disabled', true);
     // Reset formDbug + formAddAnimal
     //resetForms();
     // jQuery AJAX call to get the animals
@@ -150,8 +154,9 @@ function formAddAnimalResponse(button) {
     let l_id = 0;
     let txt = "";
 
-    $('#formAddAnimalAnimal').removeAttr('readonly');
-    $('#formAddAnimalQuestion').removeAttr('readonly');
+    $("#btnformAddAnimal").prop('enabled', true);
+    //$('#formAddAnimalAnimal').removeAttr('readonly');
+    //$('#formAddAnimalQuestion').removeAttr('readonly');
 
     l_id = (button == "Yes") ? 5 : 6;
 
@@ -216,14 +221,17 @@ function addAnAnimal() {
             console.log("after alert Error");
         }
     });
+
+    populateTable();
 }
 
 function teachMeMoreAnimals(){
   let l_obj = {};
   let txt = "";
   
-  // Hide formEtt
-  //$(formEtt).hide();
+  $(formAddAnimal).removeClass("invisible");
+ // $(formAddAnimal).addClass("visible");
+  $(formAddAnimal).show();
 
   l_obj = loopIds(4);
   txt = l_obj.question + " " + $('#animal').val() + ' ?';
