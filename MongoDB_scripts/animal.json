@@ -1,0 +1,54 @@
+/*
+Copy script
+P:\foto\2018\johan\_doc\code\Lexicon\code-projects\animal\MongoDB_scripts\resetanimals.js
+to folder
+C:\MongoDB\scripts
+
+load from mongo-shell:
+load("../scripts/resetanimals.js")
+
+The script drops, recreates and populate the animals-collection
+*/
+
+// create db animalDB
+use animalDB
+
+// removes a collection
+db.animals.drop()
+
+//create animals collection
+db.createCollection('animals')
+
+/*
+The first question has id = 4
+Everything with id < 4 is infotext for the program
+
+quetions are nodes and animals leaves in the binary tree
+
+Rules for next id:
+correct answer to a question   -> next id = 2 * id
+incorrect answer to a question -> next id = (2 * id) + 1
+ 
+
+2^2                                 4 
+2^3                        8                 9
+2^4                   16       17       18       19
+2^5                 32  33   34  35   36  37   38  39
+*/
+
+
+try {
+  db.animals.drop();
+  db.createCollection('animals');
+
+  db.animals.insertMany( [
+     { "id" : "0", "animal" : "fraga1", "question" : "Do you want to play a game?", "answer" : "Yes", "date" : "1990-12-31T00:00:00.000Z" },
+     { "id" : "1", "animal" : "fraga2", "question" : "Think of an animal and let me guess. Press Yes to start", "answer" : "Yes", "date" : "1990-12-31T00:00:00.000Z" },
+     { "id" : "4", "animal" : "addanimal1", "question" : "Let me guess: Are you thinking of a", "answer" : "Yes", "date" : "1990-12-31T00:00:00.000Z" },
+     { "id" : "5", "animal" : "addanimal2", "question" : "I could guess your animal! Do you want to play again?", "answer" : "Yes", "date" : "1990-12-31T00:00:00.000Z" },
+     { "id" : "6", "animal" : "addanimal2", "question" : "Please tell me your animal! And a question to separate it from a", "answer" : "Yes", "date" : "1990-12-31T00:00:00.000Z" },
+     { "id" : "8", "animal" : "Python", "question" : "Can this animal be a pet?", "answer" : "Yes", "date" : "1990-12-31T00:00:00.000Z" }
+  ] );
+} catch (e) {
+  print (e);
+}
