@@ -40,7 +40,7 @@ $("#btnUpdateId").click(function () {
 // Fill table with data
 function populateTable() {
     // Prevent user from adding animals
-    $("#btnformAddAnimal").prop('disabled', true);
+    //$("#btnformAddAnimal").prop('disabled', true);
     // Reset formDbug + formAddAnimal
     //resetForms();
     // jQuery AJAX call to get the animals
@@ -154,7 +154,7 @@ function formAddAnimalResponse(button) {
     let l_id = 0;
     let txt = "";
 
-    $("#btnformAddAnimal").prop('enabled', true);
+    //$("#btnformAddAnimal").prop('enabled', true);
     //$('#formAddAnimalAnimal').removeAttr('readonly');
     //$('#formAddAnimalQuestion').removeAttr('readonly');
 

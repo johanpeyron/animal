@@ -54,49 +54,48 @@
       </div>
     </form>
     <br>
-    <form id="formAddAnimal" class="bg-light text-dark border border-success needs-validation p-3" novalidate>
-      <!-- <div id="hideMe2"> -->
+
+    <form id="formAddAnimal" class="bg-light text-dark border border-success p-3">
+      <div class="container">
         <div class="form-row">
-          <div class="form-group col-md-12">
+          <div class="form-group col-sm-12">
             <input type="text" class="form-control-plaintext form-control-lg" id="formAddAnimalFraga">
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group col-md-4">
+        <div class="form-row justify-content-between">
+          <div class="form-group col-sm-4">
             <label for="animal">Animal</label>
             <input type="text" class="form-control" id="formAddAnimalAnimal">
           </div>
-          <div class="form-group col-md-8">
+          <div class="form-group col-sm-7">
             <label for="question">Question</label>
             <input type="text" class="form-control" id="formAddAnimalQuestion">
           </div>
         </div>
-        <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalYes" onclick="formAddAnimalResponse('Yes')">Yes, that´s my animal!</button>
-        <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalNo" onclick="formAddAnimalResponse('No')">No, thats´s wrong</button>
-      <!-- </div> -->
-      <div id="hideMe" class="mt-3">
-        <!-- <div class="form-row">
-          <div class="form-group col-md-12">
-            <input type="text" class="form-control-plaintext form-control-lg" id="formAddAnimalFraga" value="What is the answer to your question?">
+        <div class="form-row justify-content-between">
+          <div class="form-group col-sm-4">
+            <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalYes" onclick="formAddAnimalResponse('Yes')">Yes !</button>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalNo" onclick="formAddAnimalResponse('No')">No, sorry</button>
           </div>
-        </div> -->
-        <button type="button" class="btn btn-outline-dark btn-sm" onclick="addAnAnimal()" id="btnformAddAnimal">Add animal</button>
-        <!-- <div class="form-check form-check-inline"> -->
-        <div class="custom-control custom-radio custom-control-inline">
-          <input class="form-check-input" type="radio" name="formAddAnimalAnswer" id="formAddAnimalAnswerYes" value="Yes" checked="Yes" />
-          <label class="form-check-label" for="formAddAnimalAnswerYes">
-            Yes
-          </label>
-        </div>
-        <!-- <div class="form-check form-check-inline"> -->
-        <div class="custom-control custom-radio custom-control-inline">
-          <input class="form-check-input" type="radio" name="formAddAnimalAnswer" id="formAddAnimalAnswerNo" value="No" />
-          <label class="form-check-label" for="formAddAnimalAnswerNo">
-            No
-          </label>
+          <div class="form-group col-sm-7">
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="addAnAnimal()" id="btnformAddAnimal">Add animal</button>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="formAddAnimalAnswer" id="formAddAnimalAnswerYes" value="Yes" checked="Yes" />
+              <label class="form-check-label" for="formAddAnimalAnswerYes">
+                Yes
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="formAddAnimalAnswer" id="formAddAnimalAnswerNo" value="No" />
+              <label class="form-check-label" for="formAddAnimalAnswerNo">
+                No
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </form>
+  
   </div>
 
   <!-- Bootstrap core JavaScript
