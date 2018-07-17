@@ -62,23 +62,36 @@
             <input type="text" class="form-control-plaintext form-control-lg" id="formAddAnimalFraga">
           </div>
         </div>
+
+
         <div class="form-row justify-content-between">
           <div class="form-group col-sm-4">
             <label for="animal">Animal</label>
-            <input type="text" class="form-control" id="formAddAnimalAnimal">
+            <input type="text" class="form-control" id="formAddAnimalAnimal" required>
           </div>
           <div class="form-group col-sm-7">
             <label for="question">Question</label>
-            <input type="text" class="form-control" id="formAddAnimalQuestion">
+            <input type="text" class="form-control" id="formAddAnimalQuestion" required>
           </div>
         </div>
+
+        <div class="form-row justify-content-between">
+            <div class="form-group col-sm-4">
+              <input type="text" class="form-control invalid-feedback" id="animalError">
+            </div>
+            <div class="form-group col-sm-7">
+              <input type="text" class="form-control invalid-feedback" id="questionError">
+            </div>
+          </div>
+  
+
         <div class="form-row justify-content-between">
           <div class="form-group col-sm-4">
             <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalYes" onclick="formAddAnimalResponse('Yes')">Yes !</button>
             <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalNo" onclick="formAddAnimalResponse('No')">No, sorry</button>
           </div>
           <div class="form-group col-sm-7">
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="addAnAnimal()" id="btnformAddAnimal">Add animal</button>
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="animalValidation()" id="btnformAddAnimal">Add animal</button>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="formAddAnimalAnswer" id="formAddAnimalAnswerYes" value="Yes" checked="Yes" />
               <label class="form-check-label" for="formAddAnimalAnswerYes">

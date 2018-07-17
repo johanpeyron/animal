@@ -171,6 +171,27 @@ function formAddAnimalResponse(button) {
     $('#formAddAnimalFraga').val(txt);
 }
 
+function animalValidation() {
+    var animalObj = document.getElementById("formAddAnimalAnimal");
+    var questionObj = document.getElementById("formAddAnimalQuestion");
+    var animalMsg = "Please write an animal";
+    var questionMsg = "Please write a question";
+    var passedValidation = true;
+    
+    if (!animalObj.checkValidity()) {
+        document.getElementById("animalError").innerHTML = animalMsg;
+        passedValidation = false;
+    }
+    if (!questionObj.checkValidity()) {
+        document.getElementById("questionError").innerHTML = questionMsg;
+        passedValidation = false;
+    }
+
+    if (passedValidation) {
+        addAnAnimal();
+    }
+}
+
 // Add Animal
 function addAnAnimal() {
     let l_obj = {};
@@ -183,10 +204,10 @@ function addAnAnimal() {
     var question = $('#formAddAnimalQuestion').val();
     var playerResponse = $("input[name='formAddAnimalAnswer']:checked").val();
     
-    if ((animal === '') || (question === '')) {
+    /* if ((animal === '') || (question === '')) {
         alert('Please fill out animal and question');
         return;
-    }
+    } */
 
     // 0.3.23
     newId = playerAnswers(oldid);
