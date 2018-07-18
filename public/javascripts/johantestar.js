@@ -34,11 +34,19 @@ $("#btnResetDB").click(function () {
 $("#btnUpdateId").click(function () {
     dBugPUT();
 });
+
+// Keep track of that button addAnimalYes is clicked
+// http://api.jquery.com/jQuery.data/
+$( "#addAnimalYes" ).click( function() {
+    let btn = $( "#addAnimalYes" )[ 0 ];
+      jQuery.data( btn, "clicked", true );
+});
 // ====================   Functions   =========================================
 
 
 // Fill table with data
 function populateTable() {
+    $("#formAddAnimal").hide();
     // Prevent user from adding animals
     //$("#btnformAddAnimal").prop('disabled', true);
     // Reset formDbug + formAddAnimal
@@ -153,6 +161,15 @@ function formAddAnimalResponse(button) {
     let l_obj = {};
     let l_id = 0;
     let txt = "";
+    let btn = $( "#addAnimalYes" )[ 0 ];
+
+    $("#formAddAnimal").show();
+
+    // Has button addAnimalYes been clicked already?
+    // Then restart game
+    if (jQuery.data( btn, "clicked" )) {
+        populateTable();
+    }
 
     //$("#btnformAddAnimal").prop('enabled', true);
     //$('#formAddAnimalAnimal').removeAttr('readonly');
@@ -179,11 +196,14 @@ function animalValidation() {
     var passedValidation = true;
     
     if (!animalObj.checkValidity()) {
-        document.getElementById("animalError").innerHTML = animalMsg;
+        $('#animalError').val(animalMsg);
+        // override bootstrap.css
+        $("#animalError").show();
         passedValidation = false;
     }
     if (!questionObj.checkValidity()) {
-        document.getElementById("questionError").innerHTML = questionMsg;
+        $('#questionError').val(questionMsg);
+        $("#questionError").show();
         passedValidation = false;
     }
 
