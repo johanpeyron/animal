@@ -3,18 +3,20 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Back to basic</title>
-
+  <title>Guess the animal</title>
   <script src="/javascripts/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap412.min.css">
 </head>
 
 <body>
   <div class="container">
-    <form id="formEtt" class="bg-light text-dark border border-success p-3">
-      <div class="form-row">
-        <div class="form-group col-md-12">
+    <form id="formEtt" class="bg-light text-dark border border-success p-3 mt-2">
+      <div class="form-row justify-content-between">
+        <div class="form-group col-md-10">
           <input type="text" class="form-control-plaintext form-control-lg" id="formEttFraga" value="Connecting to database, please wait . . .">
+        </div>
+        <div class="form-group col-md-1">
+          <button type="button" class="bg-light btn btn-sm" id="btnDebugMode">.</button>
         </div>
       </div>
       <div class="form-group">
@@ -23,8 +25,7 @@
       <button type="button" class="btn btn-outline-dark btn-sm" id="btnFormEttYes" onclick="playGame('Yes')">Yes</button>
       <button type="button" class="btn btn-outline-dark btn-sm" id="btnFormEttNo" onclick="playGame('No')">No</button>
       <button type="button" class="btn btn-outline-dark btn-sm" id="btnResetDB">btnResetDB</button>
-      <button type="button" class="btn btn-outline-dark btn-sm" id="btnToggleFormAddAnimal">btnToggleFormAddAnimal</button>
-      <button type="button" class="btn btn-outline-dark btn-sm" id="btnToggleDbTxt">btnToggleDbTxt</button>
+      <!-- <button type="button" class="bg-light btn btn-sm" id="btnDebugMode">.</button> -->
     </form>
     <br>
     <form id="formDbug" class="bg-light text-dark border border-success p-3">
@@ -54,7 +55,6 @@
       </div>
     </form>
     <br>
-
     <form id="formAddAnimal" class="bg-light text-dark border border-success p-3">
       <div class="container">
         <div class="form-row">
@@ -62,8 +62,6 @@
             <input type="text" class="form-control-plaintext form-control-lg" id="formAddAnimalFraga">
           </div>
         </div>
-
-
         <div class="form-row justify-content-between">
           <div class="form-group col-sm-4">
             <label for="animal">Animal</label>
@@ -74,30 +72,24 @@
             <input type="text" class="form-control" id="formAddAnimalQuestion" required>
           </div>
         </div>
-
         <div class="form-row justify-content-between">
-            <div class="form-group col-sm-4">
-              <input type="text" class="form-control invalid-feedback h-25 d-inline-block border-0 m-1" id="animalError">
-              <!-- <input type="text" class="form-control-plaintext invalid-feedback h-25" id="animalError"> -->
-              <!-- <input type="text" class="form-control-plaintext invalid-feedback h-25 mt-0" id="animalError"> -->
-            </div>
-            <div class="form-group col-sm-7">
-              <input type="text" class="form-control invalid-feedback h-25 d-inline-block border-0 m-1" id="questionError">
-              <!-- <input type="text" class="form-control-plaintext invalid-feedback h-25" id="questionError"> -->
-              <!-- <input type="text" class="form-control-plaintext invalid-feedback h-25 mt-0" id="questionError"> -->
-            </div>
+          <div class="form-group col-sm-4">
+            <input type="text" class="form-control invalid-feedback h-25 d-inline-block border-0 m-1 bg-light" id="animalError">
           </div>
-  
-
+          <div class="form-group col-sm-7">
+            <input type="text" class="form-control invalid-feedback h-25 d-inline-block border-0 m-1 bg-light" id="questionError">
+          </div>
+        </div>
         <div class="form-row justify-content-between">
           <div class="form-group col-sm-4">
             <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalYes" onclick="formAddAnimalResponse('Yes')">Yes !</button>
-            <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalNo" onclick="formAddAnimalResponse('No')">No, sorry</button>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="addAnimalNo" onclick="formAddAnimalResponse('No')">No</button>
           </div>
           <div class="form-group col-sm-7">
             <button type="button" class="btn btn-outline-dark btn-sm" onclick="animalValidation()" id="btnformAddAnimal">Add animal</button>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="formAddAnimalAnswer" id="formAddAnimalAnswerYes" value="Yes" checked="Yes" />
+              <input class="form-check-input" type="radio" name="formAddAnimalAnswer" id="formAddAnimalAnswerYes" value="Yes" checked="Yes"
+              />
               <label class="form-check-label" for="formAddAnimalAnswerYes">
                 Yes
               </label>
@@ -112,7 +104,6 @@
         </div>
       </div>
     </form>
-  
   </div>
 
   <!-- Bootstrap core JavaScript
@@ -120,9 +111,7 @@
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="/javascripts/popper.min.js"></script>
   <script src="/javascripts/bootstrap.min.js"></script>
-  <!--   <script src="/javascripts/global.js"></script> -->
-  <script src="/javascripts/johantestar.js"></script>
-  <script src="/javascripts/johansjava.js"></script>
+    <script src="/javascripts/johansjava.js"></script>
 </body>
 
 </html>
