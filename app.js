@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 
 const indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/users');
 const animalsRouter = require('./routes/animalsroute');
 
 // Database
