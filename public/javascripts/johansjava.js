@@ -63,8 +63,8 @@ function addAnAnimal() {
         dataType: 'JSON'
     }).done(function (res) {
         if (response.msg === '') {
-            location.reload(true);
-            return;
+            //location.reload(true);
+            //return;
         } else {
             // If something goes wrong, alert the error message that our service returned
             alert('Error: ' + response.msg);
@@ -72,6 +72,12 @@ function addAnAnimal() {
     });
 
     populateTable();
+}
+
+function addAnimalShow () {
+    $('#formAddAnimalAnimal').val();
+    $('#formAddAnimalQuestion').val();
+    $("#formAddAnimal").show();
 }
 
 function animalValidation() {
@@ -118,7 +124,7 @@ function debugShow () {
     $('#dbTxt').show();
     $('#btnResetDB').show();
     $("#formDbug").show();
-    $("#formAddAnimal").show();
+    addAnimalShow();
 }
 
 // get MongoDB-document based on id
@@ -217,7 +223,7 @@ function yesOrNo(button) {
     let txt = "";
     let btn = $( "#addAnimalYes" )[ 0 ];
 
-    $("#formAddAnimal").show();
+    addAnimalShow();
 
     // Has button addAnimalYes been clicked already?
     // Restart game if player presses 'Yes'
@@ -256,8 +262,8 @@ function teachMeMoreAnimals(){
   let obj = {};
   let txt = "";
   
-  $(formAddAnimal).removeClass("invisible");
-  $(formAddAnimal).show();
+  //$(formAddAnimal).removeClass("invisible");
+  addAnimalShow();
 
   obj = loopIds(4);
   txt = obj.question + " " + $('#animal').val() + ' ?';

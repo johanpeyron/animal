@@ -12,7 +12,8 @@ router.get('/animals', (req, res) => {
 
 /* POST to animalsroute */
 router.post('/addanimal', function (req, res) {
-  console.log("Inside animalsroute POST");
+  //console.log("Inside animalsroute POST");
+  console.log(req.body);
   var db = req.db;
   var collection = db.get('animals');
   collection.insert(req.body, function (err, result) {
