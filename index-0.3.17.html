@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Back to basic</title>
+
+  <!-- Bootstrap core CSS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/debugstyle.css">
+</head>
+
+<body>
+  <form id="formEtt">
+    <h2 id="formEttFraga">Connecting to database, please wait . . .</h2>
+    <p id="dbTxt"></p>
+    <br>
+    <button type="button" id="btnFormEttYes" onclick="playGame('Yes')">Yes</button>
+    <button type="button" id="btnFormEttNo" onclick="playGame('No')">No</button>
+    <button type="button" id="btnToggleFormAddAnimal">Toggle formAddAnimal</button>
+    <button type="button" id="btnResetDB">btnResetDB</button>
+    <button type="button" id="btnUpdateId">btnUpdateId</button>
+    <br>
+  </form>
+  <br>
+  <form id=formDbug>
+    prev.Index:
+    <input type="text" class="dbug4" id="previndex"> prev.Id:
+    <input type="text" class="dbug4" id="previd"> p.Quest:
+    <input type="text" class="dbug2" id="prevquestion"> p.Animal:
+    <input type="text" class="dbug2" id="prevanimal"> p.Answer:
+    <input type="text" class="dbug4" id="prevanswer">p.aMatchQ:
+    <input type="text" class="dbug4" id="prevanswerMatchesQuestion">
+    <br>
+    Index:
+    <input type="text" class="dbug4" id="index"> Id:
+    <input type="text" class="dbug4" id="id"> Question:
+    <input type="text" class="dbug2" id="question"> Animal:
+    <input type="text" class="dbug2" id="animal"> Answer:
+    <input type="text" class="dbug4" id="answer">answerMatchesQuestion
+    <input type="text" class="dbug4" id="answerMatchesQuestion">
+    <br>
+    <br>
+    <!-- <br> lastId:
+    <input type="text" class="dbug2" id="lastId"> -->
+    <!-- <input type="text" class="dbug2" id="lastAnimal" value="lastAnimal"> -->
+    newId:
+    <input type="text" class="dbug2" id="newId"> correctAnswer
+    <input type="text" class="dbug2" id="correctAnswer">
+  </form>
+  <form id="formAddAnimal">
+    <h2 id="formAddAnimalFraga">formAddAnimal</h2>
+    Animal:
+    <br>
+    <input type="text" class="dbug3" id="formAddAnimalAnimal" required>
+    <br> Question:
+    <br>
+    <input type="text" class="dbug3" id="formAddAnimalQuestion" required>
+    <br>
+    <br>
+    <input type="button" id="addAnimalYes" value="Yes, that´s my animal!" onclick="formAddAnimalResponse('Yes')">
+    <input type="button" id="addAnimalNo" value="No, thats´s wrong" onclick="formAddAnimalResponse('No')">
+    <button type="button" id="btnToggleFormEtt">Toggle formEtt</button>
+    <fieldset>
+      <br> What is the correct answer to your question?
+      <br>
+      <input type="radio" name="formAddAnimalCorrectAnswer" value="Yes" checked>Yes
+      <br>
+      <input type="radio" name="formAddAnimalCorrectAnswer" value="No">No
+    </fieldset>
+    <br>
+    <br>
+    <button type="button" onclick="addAnAnimal()" id="btnformAddAnimal">Add animal</button>
+  </form>
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="/javascripts/popper.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+  <!--   <script src="/javascripts/global.js"></script> -->
+  <script src="/javascripts/johantestar.js"></script>
+  <script src="/javascripts/johansjava.js"></script>
+</body>
+
+</html>

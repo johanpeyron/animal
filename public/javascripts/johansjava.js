@@ -56,15 +56,17 @@ function addAnAnimal() {
     newAnimal.answer = response;
     newAnimal.keep = "0";
 
+    // Use AJAX to post to the db
     $.ajax({
         type: 'POST',
         data: newAnimal,
         url: '/animalsroute/addanimal',
         dataType: 'JSON'
-    }).done(function (res) {
+    }).done(function (response) {
+        // Check for successful (blank) response
         if (response.msg === '') {
-            //location.reload(true);
-            //return;
+            location.reload(true);
+            return;
         } else {
             // If something goes wrong, alert the error message that our service returned
             alert('Error: ' + response.msg);

@@ -11,8 +11,8 @@ const animalsRouter = require('./routes/animalsroute');
 // Database
 const mongo = require('mongodb');
 const monk = require('monk');
-const db = monk('localhost:27017/animaldb');
-//const db = monk('mongodb://gonzo:Muppet-Show_164@ds243041.mlab.com:43041/animaldb');
+//const db = monk('localhost:27017/animaldb');
+const db = monk('mongodb://gonzo:Muppet-Show_164@ds243041.mlab.com:43041/animaldb');
 
 const app = express();
 
