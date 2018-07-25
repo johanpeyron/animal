@@ -28,7 +28,7 @@
   "nodemonConfig": {
     "restartable": "rs",
     "ignore": [
-    "node_modules/**/node_modules"
+      "node_modules/**/node_modules"
     ],
     "delay": "2500",
     "env": {
